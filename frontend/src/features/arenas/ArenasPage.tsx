@@ -17,6 +17,7 @@ import {IceCard} from '@/shared/ui/IceCard'
 import {ScoreboardLoader} from '@/shared/ui/ScoreboardLoader'
 import {IceSkeleton} from '@/shared/ui/IceSkeleton'
 import {EmptyNetState} from '@/shared/ui/EmptyNetState'
+import {ScrollReveal} from '@/shared/ui/ScrollStory'
 
 /**
  * @spec SPEC-FR-6.1.1 - Страница списка и карты арен
@@ -46,10 +47,12 @@ export function ArenasPage() {
 
   return (
     <div className="arenas-page">
-      <Text variant="header-1">Катки Москвы</Text>
-      <Text color="secondary">
-        Карта площадок и разные способы записи: слоты по времени или заявка через портал.
-      </Text>
+      <ScrollReveal direction="down">
+        <Text variant="header-1" className="variable-font-header">Катки Москвы</Text>
+        <Text color="secondary">
+          Карта площадок и разные способы записи: слоты по времени или заявка через портал.
+        </Text>
+      </ScrollReveal>
 
       <ArenaFilters filters={filters} onChange={setFilters} />
 
@@ -77,18 +80,19 @@ export function ArenasPage() {
             </IceCard>
 
             <div className="arenas-page__list">
-              {arenas.map((arena) => (
-                <RinkCard
-                  key={arena.id}
-                  arena={arena}
-                  selected={arena.id === activeArenaId}
-                  onOpenDetails={setSelectedArenaId}
-                  hasFreeSlot={
-                    arena.bookingMode === 'slot_calendar'
-                      ? arenaHasFreeSlots(arena.id)
-                      : undefined
-                  }
-                />
+              {arenas.map((arena, index) => (
+                <ScrollReveal key={arena.id} direction={index % 2 === 0 ? 'left' : 'right'}>
+                  <RinkCard
+                    arena={arena}
+                    selected={arena.id === activeArenaId}
+                    onOpenDetails={setSelectedArenaId}
+                    hasFreeSlot={
+                      arena.bookingMode === 'slot_calendar'
+                        ? arenaHasFreeSlots(arena.id)
+                        : undefined
+                    }
+                  />
+                </ScrollReveal>
               ))}
             </div>
           </div>

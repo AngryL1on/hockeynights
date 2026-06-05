@@ -12,6 +12,7 @@ import {PlayerFilters} from '@/features/players/PlayerFilters'
 import {ScoreboardLoader} from '@/shared/ui/ScoreboardLoader'
 import {IceSkeleton} from '@/shared/ui/IceSkeleton'
 import {EmptyNetState} from '@/shared/ui/EmptyNetState'
+import {ScrollReveal} from '@/shared/ui/ScrollStory'
 
 /**
  * @spec SPEC-FR-2.3.1 - Страница списка игроков
@@ -26,7 +27,7 @@ export function PlayersPage() {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-      <Text variant="header-1">Игроки</Text>
+      <Text variant="header-1" className="variable-font-header">Игроки</Text>
       <PlayerFilters filters={filters} onChange={setFilters} />
 
       {isLoading && (
@@ -39,9 +40,11 @@ export function PlayersPage() {
       )}
 
       {!isLoading && (
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12}}>
-          {players.map((player) => (
-            <PlayerCard key={player.userId} player={player} />
+        <div className="bento-grid">
+          {players.map((player, index) => (
+            <ScrollReveal key={player.userId} direction={index % 2 === 0 ? 'left' : 'right'}>
+              <PlayerCard player={player} />
+            </ScrollReveal>
           ))}
         </div>
       )}

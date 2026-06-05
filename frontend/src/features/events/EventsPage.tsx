@@ -12,6 +12,7 @@ import {IceCard} from '@/shared/ui/IceCard'
 import {MatchCenterFeed} from '@/shared/ui/MatchCenterFeed'
 import {ScoreboardLoader} from '@/shared/ui/ScoreboardLoader'
 import {EmptyNetState} from '@/shared/ui/EmptyNetState'
+import {ScrollReveal} from '@/shared/ui/ScrollStory'
 
 /**
  * @spec SPEC-UI-2.5 - Страница событий как матч-центр
@@ -33,36 +34,44 @@ export function EventsPage() {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-      <Text variant="header-1">Игры и тренировки</Text>
+      <ScrollReveal direction="down">
+        <Text variant="header-1" className="variable-font-header">Игры и тренировки</Text>
+      </ScrollReveal>
 
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20}}>
-        <IceCard padding="m">
-          <EventCreateForm />
-        </IceCard>
+        <ScrollReveal direction="left">
+          <IceCard padding="m">
+            <EventCreateForm />
+          </IceCard>
+        </ScrollReveal>
 
-        <IceCard padding="m">
-          {isLoading ? (
-            <ScoreboardLoader />
-          ) : (
-            <MatchCenterFeed
-              title="Матч-центр"
-              rows={matchRows}
-              empty={
-                <EmptyNetState
-                  title="Пустая сетка"
-                  copy="Ближайших событий нет — создай игру или тренировку."
-                />
-              }
-            />
-          )}
-        </IceCard>
+        <ScrollReveal direction="right">
+          <IceCard padding="m">
+            {isLoading ? (
+              <ScoreboardLoader />
+            ) : (
+              <MatchCenterFeed
+                title="Матч-центр"
+                rows={matchRows}
+                empty={
+                  <EmptyNetState
+                    title="Пустая сетка"
+                    copy="Ближайших событий нет — создай игру или тренировку."
+                  />
+                }
+              />
+            )}
+          </IceCard>
+        </ScrollReveal>
       </div>
 
       {!isLoading && events.length > 0 && (
         <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
           <Text variant="subheader-2">Детали событий</Text>
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+          {events.map((event, index) => (
+            <ScrollReveal key={event.id} direction={index % 2 === 0 ? 'up' : 'down'}>
+              <EventCard event={event} />
+            </ScrollReveal>
           ))}
         </div>
       )}
