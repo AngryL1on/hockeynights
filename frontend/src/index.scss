@@ -1,0 +1,55 @@
+@use './shared/theme/tokens';
+@use './shared/styles/motion';
+@use './shared/styles/hockey-ui';
+
+body {
+  margin: 0;
+  font-family: var(--hockey-font-sans);
+  background: var(--hockey-surface);
+  color: var(--g-color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-shell__main-col {
+  .g-text_variant_header-1 {
+    font-family: var(--hockey-font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 4px;
+    background: linear-gradient(
+      135deg,
+      var(--g-color-text-primary) 40%,
+      var(--hockey-accent) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .g-text_variant_header-2 {
+    font-family: var(--hockey-font-display);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .g-text_variant_subheader-2 {
+    font-family: var(--hockey-font-scoreboard);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hockey-text-muted);
+  }
+}
