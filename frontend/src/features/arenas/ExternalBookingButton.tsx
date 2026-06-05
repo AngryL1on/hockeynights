@@ -1,0 +1,51 @@
+/**
+ * SPEC-FR-6.2.2, SPEC-FR-6.4.2
+ */
+
+import {useState} from 'react'
+import {HockeyButton} from '@/shared/ui/HockeyButton'
+import type {Arena} from '@/entities/arena/types'
+import type {IceSlot} from '@/entities/arena/types'
+import {MockIceBookingModal} from '@/features/arenas/MockIceBookingModal'
+
+/** @spec SPEC-FR-6.2.2 - Props кнопки записи */
+export interface ExternalBookingButtonProps {
+  /** @spec SPEC-FR-6.2.1 */
+  arena: Arena
+  /** @spec SPEC-FR-6.3.1 */
+  slot?: IceSlot
+  /** @spec SPEC-FR-6.2.2 */
+  label?: string
+  /** @spec SPEC-FR-6.2.2 */
+  size?: 's' | 'm' | 'l' | 'xl'
+}
+
+/**
+ * @spec SPEC-FR-6.2.2 - Кнопка записи на лёд через mock-flow
+ * @spec SPEC-FR-6.4.2 - Открывает mock-мастер вместо мёртвой внешней ссылки
+ */
+export function ExternalBookingButton({
+  arena,
+  slot,
+  label = 'Записаться на лёд',
+  size = 'm',
+}: ExternalBookingButtonProps) {
+  const [open, setOpen] = useState(false)
+  const canBook = slot ? slot.status === 'free' : Boolean(arena.bookingUrl ?? arena.websiteUrl)
+
+  if (!canBook) return null
+
+  return (
+    <>
+      <HockeyButton size={size} onClick={() => setOpen(true)}>
+        {label}
+      </HockeyButton>
+      <MockIceBookingModal
+        open={open}
+        onClose={() => setOpen(false)}
+        arena={arena}
+        slot={slot}
+      />
+    </>
+  )
+}

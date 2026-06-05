@@ -1,0 +1,56 @@
+/**
+ * SPEC-UI-4.1, SPEC-UI-4.2, SPEC-FR-1.2.2
+ * Hockey Social design tokens поверх Gravity UI.
+ */
+
+:root {
+  --hockey-ice-deep: #0b1f3a;
+  --hockey-ice-mid: #1a4d6e;
+  --hockey-ice-glow: #4db8e8;
+  --hockey-line-red: #e10600;
+  --hockey-locker-warm: #f4f1ea;
+  --hockey-locker-concrete: #d8d4cc;
+  --hockey-board-gold: #ffd700;
+  --hockey-rink-mist: #c8d6e5;
+  --hockey-slot-green: #2ecc71;
+  --hockey-puck-shadow: 0 4px 14px rgba(11, 31, 58, 0.18);
+  --hockey-ice-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --hockey-motion-fast: 200ms;
+  --hockey-motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --hockey-font-scoreboard: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+}
+
+/* SPEC-UI-4.2 Locker Room (light) */
+[data-hockey-theme='locker'] {
+  --hockey-surface: var(--hockey-locker-warm);
+  --hockey-card-bg: #ffffff;
+  --hockey-card-border: var(--hockey-locker-concrete);
+  --hockey-accent: var(--hockey-line-red);
+  --hockey-text-muted: #6b6560;
+  --hockey-spotlight: linear-gradient(
+    180deg,
+    rgba(255, 209, 0, 0.08) 0%,
+    transparent 120px
+  );
+}
+
+/* SPEC-UI-4.1 Ice & Energy (dark) */
+[data-hockey-theme='ice'] {
+  --hockey-surface: var(--hockey-ice-deep);
+  --hockey-card-bg: #122a45;
+  --hockey-card-border: var(--hockey-ice-mid);
+  --hockey-accent: var(--hockey-ice-glow);
+  --hockey-text-muted: var(--hockey-rink-mist);
+  --hockey-spotlight: linear-gradient(
+    180deg,
+    rgba(77, 184, 232, 0.12) 0%,
+    transparent 160px
+  );
+}
+
+body {
+  background: var(--hockey-surface);
+  background-image: var(--hockey-spotlight);
+  background-repeat: no-repeat;
+  transition: background-color var(--hockey-motion-fast) var(--hockey-motion-ease);
+}

@@ -1,0 +1,37 @@
+/**
+ * SPEC-FR-2.1.1, SPEC-FR-2.1.2, SPEC-FR-2.1.3, SPEC-FR-1.3.1 - SPEC-FR-1.3.5
+ */
+
+import type { UserRole } from '@/entities/common/types'
+
+/** @spec SPEC-FR-2.1.1 - Пользователь mock-сессии */
+export interface User {
+  /** @spec SPEC-FR-2.1.1 */
+  id: string
+  /** @spec SPEC-FR-2.1.1 */
+  displayName: string
+  /** @spec SPEC-FR-2.1.2 */
+  roles: UserRole[]
+  /** @spec SPEC-FR-2.3.1 */
+  avatarUrl?: string
+  /** @spec SPEC-FR-1.2.4 */
+  city: string
+  /** @spec SPEC-FR-12.1.2 */
+  createdAt: string
+}
+
+/** @spec SPEC-FR-2.1.1 - Текущая сессия */
+export interface Session {
+  /** @spec SPEC-FR-2.1.1 */
+  user: User
+  /** @spec SPEC-FR-2.1.3 */
+  isOnboarded: boolean
+}
+
+/** @spec SPEC-FR-2.1.2 - Payload onboarding */
+export interface OnboardingPayload {
+  /** @spec SPEC-FR-2.1.2 */
+  displayName: string
+  /** @spec SPEC-FR-2.1.2 */
+  roles: UserRole[]
+}

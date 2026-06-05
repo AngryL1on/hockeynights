@@ -1,0 +1,44 @@
+/**
+ * SPEC-FR-11.1.2
+ */
+
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Switch} from '@gravity-ui/uikit'
+import type {AdminEntityType} from '@/entities/admin/types'
+import {updateEntityVisibility} from '@/features/admin/api/adminApi'
+
+/** @spec SPEC-FR-11.1.2 - Props переключателя видимости */
+export interface VisibilityToggleProps {
+  /** @spec SPEC-FR-11.1.2 */
+  entityId: string
+  /** @spec SPEC-FR-11.1.2 */
+  entityType: AdminEntityType
+  /** @spec SPEC-FR-11.1.2 */
+  visible: boolean
+}
+
+/**
+ * @spec SPEC-FR-11.1.2 - Скрыть или показать запись
+ */
+export function VisibilityToggle({entityId, entityType, visible}: VisibilityToggleProps) {
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: (nextVisible: boolean) =>
+      updateEntityVisibility(entityId, entityType, nextVisible),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({queryKey: ['admin-sources']})
+      void queryClient.invalidateQueries({queryKey: ['arenas']})
+      void queryClient.invalidateQueries({queryKey: ['leagues']})
+      void queryClient.invalidateQueries({queryKey: ['shops']})
+    },
+  })
+
+  return (
+    <Switch
+      checked={visible}
+      disabled={mutation.isPending}
+      onUpdate={(checked) => mutation.mutate(checked)}
+    />
+  )
+}

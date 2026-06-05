@@ -1,0 +1,88 @@
+/**
+ * SPEC-FR-2.1.1, SPEC-FR-2.1.2, SPEC-FR-1.3.1, SPEC-FR-1.3.2, SPEC-FR-1.3.3, SPEC-FR-1.3.4
+ */
+
+import {useState} from 'react'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Button, Card, Checkbox, Text, TextInput} from '@gravity-ui/uikit'
+import {useNavigate} from 'react-router-dom'
+import {submitOnboarding} from '@/features/auth/api/sessionApi'
+import type {UserRole} from '@/entities/common/types'
+
+const ROLE_OPTIONS: {value: UserRole; label: string; spec: string}[] = [
+  {value: 'player', label: 'Игрок', spec: 'SPEC-FR-1.3.1'},
+  {value: 'goalie', label: 'Вратарь', spec: 'SPEC-FR-1.3.2'},
+  {value: 'captain', label: 'Капитан', spec: 'SPEC-FR-1.3.3'},
+  {value: 'organizer', label: 'Организатор', spec: 'SPEC-FR-1.3.4'},
+]
+
+/**
+ * @spec SPEC-FR-2.1.1 - Mock-вход без реальной авторизации
+ * @spec SPEC-FR-2.1.2 - Выбор ролей при onboarding
+ */
+export function MockLoginPage() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [displayName, setDisplayName] = useState('Иван Петров')
+  const [roles, setRoles] = useState<UserRole[]>(['player'])
+
+  const onboardingMutation = useMutation({
+    mutationFn: submitOnboarding,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({queryKey: ['session']})
+      navigate('/profile')
+    },
+  })
+
+  /** @spec SPEC-FR-2.1.2 - Переключение роли */
+  function toggleRole(role: UserRole, checked: boolean) {
+    setRoles((prev) => (checked ? [...prev, role] : prev.filter((r) => r !== role)))
+  }
+
+  /** @spec SPEC-FR-2.1.2 - Отправка onboarding */
+  function handleSubmit() {
+    if (!displayName.trim() || roles.length === 0) return
+    onboardingMutation.mutate({displayName: displayName.trim(), roles})
+  }
+
+  return (
+    <Card view="filled" style={{maxWidth: 480, margin: '0 auto'}}>
+      <div style={{padding: 24, display: 'flex', flexDirection: 'column', gap: 16}}>
+        <Text variant="header-1">Hockey ID — вход</Text>
+        <Text color="secondary">
+          Mock-сессия Phase 1. Выберите роли и начните работу с профилем.
+        </Text>
+
+        <TextInput
+          label="Имя"
+          value={displayName}
+          onUpdate={setDisplayName}
+          size="l"
+        />
+
+        <div>
+          <Text variant="subheader-2">Роли</Text>
+          <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8}}>
+            {ROLE_OPTIONS.map((option) => (
+              <Checkbox
+                key={option.value}
+                checked={roles.includes(option.value)}
+                onUpdate={(checked) => toggleRole(option.value, checked)}
+                content={option.label}
+              />
+            ))}
+          </div>
+        </div>
+
+        <Button
+          view="action"
+          size="l"
+          loading={onboardingMutation.isPending}
+          onClick={handleSubmit}
+        >
+          Войти в mock-сессию
+        </Button>
+      </div>
+    </Card>
+  )
+}

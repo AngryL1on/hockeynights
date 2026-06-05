@@ -1,0 +1,107 @@
+/**
+ * SPEC-FR-5.1.1, SPEC-FR-5.1.2, SPEC-FR-5.1.3
+ * SPEC-UI-1.2
+ */
+
+import {useEffect, useState} from 'react'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+import {Checkbox, Select, Text, TextArea, TextInput} from '@gravity-ui/uikit'
+import {createRecruitmentRequest} from '@/features/sos/api/recruitmentApi'
+import {fetchEvents} from '@/features/events/api/eventsApi'
+import type {PlayerPosition, SkillLevel} from '@/entities/common/types'
+import {HockeyButton} from '@/shared/ui/HockeyButton'
+
+const POSITION_OPTIONS = [
+  {value: 'goalie', content: 'Вратарь'},
+  {value: 'defense', content: 'Защитник'},
+  {value: 'forward', content: 'Нападающий'},
+  {value: 'any', content: 'Любое'},
+]
+
+const SKILL_OPTIONS = [
+  {value: 'beginner', content: 'Дебютант'},
+  {value: 'amateur', content: 'Любитель'},
+  {value: 'advanced', content: 'Продвинутый'},
+]
+
+/**
+ * @spec SPEC-UI-1.2 - SOS с красной лампой
+ * @spec SPEC-FR-5.1.1 - Форма Goalkeeper SOS
+ */
+export function SosRequestForm() {
+  const queryClient = useQueryClient()
+  const {data: events = []} = useQuery({queryKey: ['events'], queryFn: fetchEvents})
+
+  const [eventId, setEventId] = useState('')
+
+  useEffect(() => {
+    if (!eventId && events[0]?.id) setEventId(events[0].id)
+  }, [events, eventId])
+  const [requestedPosition, setRequestedPosition] = useState<PlayerPosition>('goalie')
+  const [skillLevel, setSkillLevel] = useState<SkillLevel>('amateur')
+  const [isGoalkeeperSos, setIsGoalkeeperSos] = useState(true)
+  const [district, setDistrict] = useState('САО')
+  const [price, setPrice] = useState('0')
+  const [comment, setComment] = useState('')
+
+  const mutation = useMutation({
+    mutationFn: createRecruitmentRequest,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({queryKey: ['recruitment-requests']})
+      setComment('')
+    },
+  })
+
+  const eventOptions = events.map((e) => ({value: e.id, content: e.title}))
+
+  function handleSubmit() {
+    if (!eventId) return
+    mutation.mutate({
+      eventId,
+      requestedPosition,
+      skillLevel,
+      isGoalkeeperSos,
+      district: district || undefined,
+      price: Number(price) || undefined,
+      comment: comment || undefined,
+    })
+  }
+
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+      <Text variant="subheader-2">Запустить добор / Goalkeeper SOS</Text>
+      <Select
+        label="Событие"
+        value={eventId ? [eventId] : []}
+        onUpdate={(v) => setEventId(v[0] ?? '')}
+        options={eventOptions}
+      />
+      <Select
+        label="Амплуа"
+        value={[requestedPosition]}
+        onUpdate={(v) => setRequestedPosition(v[0] as PlayerPosition)}
+        options={POSITION_OPTIONS}
+      />
+      <Select
+        label="Уровень"
+        value={[skillLevel]}
+        onUpdate={(v) => setSkillLevel(v[0] as SkillLevel)}
+        options={SKILL_OPTIONS}
+      />
+      <TextInput label="Район" value={district} onUpdate={setDistrict} />
+      <TextInput label="Цена участия (RUB)" value={price} onUpdate={setPrice} />
+      <div>
+        <Text color="secondary">Комментарий</Text>
+        <TextArea value={comment} onUpdate={setComment} minRows={2} />
+      </div>
+      <Checkbox
+        checked={isGoalkeeperSos}
+        onUpdate={setIsGoalkeeperSos}
+        content="Goalkeeper SOS"
+      />
+      <HockeyButton variant="sos" loading={mutation.isPending} onClick={handleSubmit}>
+        Опубликовать запрос
+      </HockeyButton>
+    </div>
+  )
+}

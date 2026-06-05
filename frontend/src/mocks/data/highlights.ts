@@ -1,0 +1,446 @@
+/**
+ * SPEC-FR-14.1.1, SPEC-FR-14.1.2, SPEC-FR-14.1.3, SPEC-FR-14.1.4
+ */
+
+import type {
+  CreateAnnotationPayload,
+  CreateCommentPayload,
+  CreateHighlightPayload,
+  Highlight,
+  HighlightAnnotation,
+  HighlightComment,
+  HighlightDetail,
+} from '@/entities/highlight/types'
+
+const mockSource = {
+  source: 'mock' as const,
+  updatedAt: '2026-06-05T14:00:00Z',
+  syncStatus: 'mock' as const,
+}
+
+/** @spec SPEC-FR-14.1.1 - Mock моменты */
+export let mockHighlights: Highlight[] = [
+  {
+    id: 'hl-001',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-001',
+    authorDisplayName: 'Иван Петров',
+    title: 'Контратака 2 в 1',
+    mockPreviewUrl: 'mock://highlight/hl-001',
+    uploadStatus: 'mock',
+    durationSeconds: 12,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-002',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-003',
+    authorDisplayName: 'Дмитрий Козлов',
+    title: 'Ошибка в зоне защиты',
+    mockPreviewUrl: 'mock://highlight/hl-002',
+    uploadStatus: 'mock',
+    durationSeconds: 18,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-003',
+    eventId: 'event-002',
+    teamId: 'team-001',
+    authorUserId: 'user-001',
+    authorDisplayName: 'Иван Петров',
+    title: 'Бросок с точки',
+    mockPreviewUrl: 'mock://highlight/hl-003',
+    uploadStatus: 'mock',
+    durationSeconds: 8,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-004',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-004',
+    authorDisplayName: 'Сергей Волков',
+    title: 'Сэйв вратаря',
+    mockPreviewUrl: 'mock://highlight/hl-004',
+    uploadStatus: 'mock',
+    durationSeconds: 6,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-005',
+    eventId: 'event-002',
+    teamId: 'team-001',
+    authorUserId: 'user-003',
+    authorDisplayName: 'Дмитрий Козлов',
+    title: 'Передача через центр',
+    mockPreviewUrl: 'mock://highlight/hl-005',
+    uploadStatus: 'mock',
+    durationSeconds: 10,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-006',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-001',
+    authorDisplayName: 'Иван Петров',
+    title: 'Выход из зоны под прессингом',
+    mockPreviewUrl: 'mock://highlight/hl-006',
+    uploadStatus: 'mock',
+    durationSeconds: 15,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-007',
+    eventId: 'event-002',
+    teamId: 'team-001',
+    authorUserId: 'user-004',
+    authorDisplayName: 'Сергей Волков',
+    title: 'Игра в большинстве',
+    mockPreviewUrl: 'mock://highlight/hl-007',
+    uploadStatus: 'mock',
+    durationSeconds: 22,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-008',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-003',
+    authorDisplayName: 'Дмитрий Козлов',
+    title: 'Блокировка броска',
+    mockPreviewUrl: 'mock://highlight/hl-008',
+    uploadStatus: 'mock',
+    durationSeconds: 5,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-009',
+    eventId: 'event-002',
+    teamId: 'team-001',
+    authorUserId: 'user-001',
+    authorDisplayName: 'Иван Петров',
+    title: 'Розыгрыш вбрасывания',
+    mockPreviewUrl: 'mock://highlight/hl-009',
+    uploadStatus: 'mock',
+    durationSeconds: 9,
+    sourceMeta: mockSource,
+  },
+  {
+    id: 'hl-010',
+    eventId: 'event-001',
+    teamId: 'team-001',
+    authorUserId: 'user-004',
+    authorDisplayName: 'Сергей Волков',
+    title: 'Гол с подставы',
+    mockPreviewUrl: 'mock://highlight/hl-010',
+    uploadStatus: 'mock',
+    durationSeconds: 14,
+    sourceMeta: mockSource,
+  },
+]
+
+/** @spec SPEC-FR-14.1.2 - Mock разметка */
+export let mockHighlightAnnotations: HighlightAnnotation[] = [
+  {id: 'ann-001', highlightId: 'hl-001', timestampMs: 3200, type: 'arrow', payload: {x1: 20, y1: 60, x2: 75, y2: 35, label: 'Пас'}, authorUserId: 'user-001'},
+  {id: 'ann-002', highlightId: 'hl-001', timestampMs: 5200, type: 'zone', payload: {x: 55, y: 25, width: 30, height: 20, label: 'Слот'}, authorUserId: 'user-001'},
+  {id: 'ann-003', highlightId: 'hl-001', timestampMs: 8200, type: 'text', payload: {x: 10, y: 80, text: 'Открытый партнёр'}, authorUserId: 'user-003'},
+  {id: 'ann-004', highlightId: 'hl-002', timestampMs: 4100, type: 'zone', payload: {x: 15, y: 40, width: 35, height: 25, label: 'Потеря'}, authorUserId: 'user-003'},
+  {id: 'ann-005', highlightId: 'hl-002', timestampMs: 6100, type: 'arrow', payload: {x1: 40, y1: 50, x2: 80, y2: 70, label: 'Контр-ход'}, authorUserId: 'user-001'},
+  {id: 'ann-006', highlightId: 'hl-002', timestampMs: 9100, type: 'text', payload: {x: 50, y: 15, text: 'Нет связи с вратарём'}, authorUserId: 'user-001'},
+  {id: 'ann-007', highlightId: 'hl-003', timestampMs: 2000, type: 'arrow', payload: {x1: 30, y1: 45, x2: 65, y2: 45, label: 'Бросок'}, authorUserId: 'user-001'},
+  {id: 'ann-008', highlightId: 'hl-003', timestampMs: 4500, type: 'zone', payload: {x: 60, y: 30, width: 25, height: 30}, authorUserId: 'user-001'},
+  {id: 'ann-009', highlightId: 'hl-003', timestampMs: 6000, type: 'text', payload: {x: 20, y: 70, text: 'Хороший выбор угла'}, authorUserId: 'user-003'},
+  {id: 'ann-010', highlightId: 'hl-004', timestampMs: 1500, type: 'zone', payload: {x: 40, y: 35, width: 20, height: 30, label: 'Крест'}, authorUserId: 'user-004'},
+  {id: 'ann-011', highlightId: 'hl-004', timestampMs: 3500, type: 'arrow', payload: {x1: 55, y1: 40, x2: 55, y2: 65}, authorUserId: 'user-004'},
+  {id: 'ann-012', highlightId: 'hl-004', timestampMs: 5000, type: 'text', payload: {x: 65, y: 20, text: 'Реакция'}, authorUserId: 'user-001'},
+  {id: 'ann-013', highlightId: 'hl-005', timestampMs: 2800, type: 'arrow', payload: {x1: 25, y1: 55, x2: 70, y2: 40}, authorUserId: 'user-003'},
+  {id: 'ann-014', highlightId: 'hl-005', timestampMs: 5500, type: 'text', payload: {x: 40, y: 60, text: 'Своевременный пас'}, authorUserId: 'user-001'},
+  {id: 'ann-015', highlightId: 'hl-005', timestampMs: 7800, type: 'zone', payload: {x: 68, y: 28, width: 22, height: 18}, authorUserId: 'user-003'},
+  {id: 'ann-016', highlightId: 'hl-006', timestampMs: 5000, type: 'arrow', payload: {x1: 10, y1: 75, x2: 45, y2: 30}, authorUserId: 'user-001'},
+  {id: 'ann-017', highlightId: 'hl-006', timestampMs: 9000, type: 'zone', payload: {x: 5, y: 20, width: 40, height: 35, label: 'Выход'}, authorUserId: 'user-001'},
+  {id: 'ann-018', highlightId: 'hl-006', timestampMs: 12000, type: 'text', payload: {x: 55, y: 75, text: 'Смена направления'}, authorUserId: 'user-003'},
+  {id: 'ann-019', highlightId: 'hl-007', timestampMs: 6000, type: 'zone', payload: {x: 50, y: 20, width: 35, height: 40, label: 'PP'}, authorUserId: 'user-004'},
+  {id: 'ann-020', highlightId: 'hl-007', timestampMs: 11000, type: 'arrow', payload: {x1: 35, y1: 50, x2: 75, y2: 35}, authorUserId: 'user-004'},
+  {id: 'ann-021', highlightId: 'hl-007', timestampMs: 16000, type: 'text', payload: {x: 15, y: 25, text: 'Перегрузка фланга'}, authorUserId: 'user-001'},
+  {id: 'ann-022', highlightId: 'hl-008', timestampMs: 1200, type: 'arrow', payload: {x1: 50, y1: 30, x2: 50, y2: 55}, authorUserId: 'user-003'},
+  {id: 'ann-023', highlightId: 'hl-008', timestampMs: 2800, type: 'text', payload: {x: 60, y: 65, text: 'Блок'}, authorUserId: 'user-001'},
+  {id: 'ann-024', highlightId: 'hl-008', timestampMs: 4000, type: 'zone', payload: {x: 42, y: 38, width: 18, height: 22}, authorUserId: 'user-003'},
+  {id: 'ann-025', highlightId: 'hl-009', timestampMs: 2500, type: 'zone', payload: {x: 48, y: 45, width: 15, height: 12, label: 'Вброс'}, authorUserId: 'user-001'},
+  {id: 'ann-026', highlightId: 'hl-009', timestampMs: 5000, type: 'arrow', payload: {x1: 52, y1: 48, x2: 78, y2: 30}, authorUserId: 'user-001'},
+  {id: 'ann-027', highlightId: 'hl-009', timestampMs: 7500, type: 'text', payload: {x: 25, y: 55, text: 'Выигранное вбрасывание'}, authorUserId: 'user-003'},
+  {id: 'ann-028', highlightId: 'hl-010', timestampMs: 4000, type: 'arrow', payload: {x1: 20, y1: 40, x2: 72, y2: 42, label: 'Подстава'}, authorUserId: 'user-004'},
+  {id: 'ann-029', highlightId: 'hl-010', timestampMs: 8000, type: 'zone', payload: {x: 68, y: 32, width: 24, height: 22, label: 'Гол'}, authorUserId: 'user-004'},
+  {id: 'ann-030', highlightId: 'hl-010', timestampMs: 11000, type: 'text', payload: {x: 30, y: 18, text: 'Отличный тайминг'}, authorUserId: 'user-001'},
+]
+
+/** @spec SPEC-FR-14.1.3 - Mock комментарии */
+export let mockHighlightComments: HighlightComment[] = [
+  {id: 'hc-001', highlightId: 'hl-001', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Правильный выбор — отдали в слот, а не бросили сами.', createdAt: '2026-06-05T15:00:00Z'},
+  {id: 'hc-002', highlightId: 'hl-001', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'На такой скорости держи клюшку на льду для быстрого паса.', createdAt: '2026-06-05T15:10:00Z'},
+  {id: 'hc-003', highlightId: 'hl-002', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'mistake', text: 'Потеря под прессингом — нужен короткий пас на борт.', createdAt: '2026-06-05T15:20:00Z'},
+  {id: 'hc-004', highlightId: 'hl-002', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'Смотри на слабую сторону перед приёмом шайбы.', createdAt: '2026-06-05T15:25:00Z'},
+  {id: 'hc-005', highlightId: 'hl-003', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'good_play', text: 'Хороший выбор точки броска.', createdAt: '2026-06-05T15:30:00Z'},
+  {id: 'hc-006', highlightId: 'hl-004', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Вратарь закрыл угол — молодец.', createdAt: '2026-06-05T15:35:00Z'},
+  {id: 'hc-007', highlightId: 'hl-005', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'tip', text: 'Пас через центр — рискованно, но здесь оправдан.', createdAt: '2026-06-05T15:40:00Z'},
+  {id: 'hc-008', highlightId: 'hl-006', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'good_play', text: 'Спокойный выход из зоны под давлением.', createdAt: '2026-06-05T15:45:00Z'},
+  {id: 'hc-009', highlightId: 'hl-007', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'tip', text: 'В большинстве держим шайбу на фланге и меняем позиции.', createdAt: '2026-06-05T15:50:00Z'},
+  {id: 'hc-010', highlightId: 'hl-007', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'mistake', text: 'Один игрок остался без опеки у синей линии.', createdAt: '2026-06-05T15:55:00Z'},
+  {id: 'hc-011', highlightId: 'hl-008', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Своевременный блок — спасли ситуацию.', createdAt: '2026-06-05T16:00:00Z'},
+  {id: 'hc-012', highlightId: 'hl-009', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'На вбрасывании первым движением — к шайбе.', createdAt: '2026-06-05T16:05:00Z'},
+  {id: 'hc-013', highlightId: 'hl-010', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Идеальная подстава на добивании.', createdAt: '2026-06-05T16:10:00Z'},
+  {id: 'hc-014', highlightId: 'hl-010', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'Держи клюшку в слоте, не опускай раньше времени.', createdAt: '2026-06-05T16:15:00Z'},
+  {id: 'hc-015', highlightId: 'hl-001', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'На контратаке второй нападающий должен идти широко.', createdAt: '2026-06-05T16:20:00Z'},
+  {id: 'hc-016', highlightId: 'hl-003', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'mistake', text: 'Можно было отдать на far post.', createdAt: '2026-06-05T16:25:00Z'},
+  {id: 'hc-017', highlightId: 'hl-005', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'good_play', text: 'Видение поля — отличный пас.', createdAt: '2026-06-05T16:30:00Z'},
+  {id: 'hc-018', highlightId: 'hl-006', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'При выходе из зоны смотри на weak side winger.', createdAt: '2026-06-05T16:35:00Z'},
+  {id: 'hc-019', highlightId: 'hl-008', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'mistake', text: 'Можно было лучше прикрыть слот после блока.', createdAt: '2026-06-05T16:40:00Z'},
+  {id: 'hc-020', highlightId: 'hl-009', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Чистое вбрасывание — контроль с первого касания.', createdAt: '2026-06-05T16:45:00Z'},
+]
+
+/**
+ * @spec SPEC-FR-14.1.1 - Детали момента с разметкой и комментариями
+ */
+export function getHighlightDetail(highlightId: string): HighlightDetail | undefined {
+  const highlight = mockHighlights.find((h) => h.id === highlightId)
+  if (!highlight) return undefined
+  return {
+    ...highlight,
+    annotations: mockHighlightAnnotations.filter((a) => a.highlightId === highlightId),
+    comments: mockHighlightComments.filter((c) => c.highlightId === highlightId),
+  }
+}
+
+/**
+ * @spec SPEC-FR-14.1.1 - Создать mock-загрузку
+ */
+export function createMockHighlight(payload: CreateHighlightPayload): Highlight {
+  const highlight: Highlight = {
+    id: `hl-${Date.now()}`,
+    ...payload,
+    authorDisplayName: payload.authorUserId === 'user-001' ? 'Иван Петров' : 'Игрок',
+    mockPreviewUrl: `mock://highlight/${Date.now()}`,
+    uploadStatus: 'mock',
+    durationSeconds: payload.durationSeconds ?? 10,
+    sourceMeta: {...mockSource, updatedAt: new Date().toISOString()},
+  }
+  mockHighlights = [highlight, ...mockHighlights]
+  return highlight
+}
+
+/**
+ * @spec SPEC-FR-14.1.2 - Добавить разметку
+ */
+export function createMockAnnotation(
+  highlightId: string,
+  payload: CreateAnnotationPayload,
+): HighlightAnnotation | undefined {
+  if (!mockHighlights.some((h) => h.id === highlightId)) return undefined
+  const annotation: HighlightAnnotation = {
+    id: `ann-${Date.now()}`,
+    highlightId,
+    ...payload,
+  }
+  mockHighlightAnnotations = [...mockHighlightAnnotations, annotation]
+  return annotation
+}
+
+/**
+ * @spec SPEC-FR-14.1.3 - Добавить комментарий
+ */
+export function createMockComment(
+  highlightId: string,
+  payload: CreateCommentPayload,
+): HighlightComment | undefined {
+  if (!mockHighlights.some((h) => h.id === highlightId)) return undefined
+  const comment: HighlightComment = {
+    id: `hc-${Date.now()}`,
+    highlightId,
+    ...payload,
+    createdAt: new Date().toISOString(),
+  }
+  mockHighlightComments = [...mockHighlightComments, comment]
+  return comment
+}
+
+/** Сброс mock state для изолированных тестов */
+export function resetMockHighlightsState(): void {
+  mockHighlights = [
+    {
+      id: 'hl-001',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-001',
+      authorDisplayName: 'Иван Петров',
+      title: 'Контратака 2 в 1',
+      mockPreviewUrl: 'mock://highlight/hl-001',
+      uploadStatus: 'mock',
+      durationSeconds: 12,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-002',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-003',
+      authorDisplayName: 'Дмитрий Козлов',
+      title: 'Ошибка в зоне защиты',
+      mockPreviewUrl: 'mock://highlight/hl-002',
+      uploadStatus: 'mock',
+      durationSeconds: 18,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-003',
+      eventId: 'event-002',
+      teamId: 'team-001',
+      authorUserId: 'user-001',
+      authorDisplayName: 'Иван Петров',
+      title: 'Бросок с точки',
+      mockPreviewUrl: 'mock://highlight/hl-003',
+      uploadStatus: 'mock',
+      durationSeconds: 8,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-004',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-004',
+      authorDisplayName: 'Сергей Волков',
+      title: 'Сэйв вратаря',
+      mockPreviewUrl: 'mock://highlight/hl-004',
+      uploadStatus: 'mock',
+      durationSeconds: 6,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-005',
+      eventId: 'event-002',
+      teamId: 'team-001',
+      authorUserId: 'user-003',
+      authorDisplayName: 'Дмитрий Козлов',
+      title: 'Передача через центр',
+      mockPreviewUrl: 'mock://highlight/hl-005',
+      uploadStatus: 'mock',
+      durationSeconds: 10,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-006',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-001',
+      authorDisplayName: 'Иван Петров',
+      title: 'Выход из зоны под прессингом',
+      mockPreviewUrl: 'mock://highlight/hl-006',
+      uploadStatus: 'mock',
+      durationSeconds: 15,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-007',
+      eventId: 'event-002',
+      teamId: 'team-001',
+      authorUserId: 'user-004',
+      authorDisplayName: 'Сергей Волков',
+      title: 'Игра в большинстве',
+      mockPreviewUrl: 'mock://highlight/hl-007',
+      uploadStatus: 'mock',
+      durationSeconds: 22,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-008',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-003',
+      authorDisplayName: 'Дмитрий Козлов',
+      title: 'Блокировка броска',
+      mockPreviewUrl: 'mock://highlight/hl-008',
+      uploadStatus: 'mock',
+      durationSeconds: 5,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-009',
+      eventId: 'event-002',
+      teamId: 'team-001',
+      authorUserId: 'user-001',
+      authorDisplayName: 'Иван Петров',
+      title: 'Розыгрыш вбрасывания',
+      mockPreviewUrl: 'mock://highlight/hl-009',
+      uploadStatus: 'mock',
+      durationSeconds: 9,
+      sourceMeta: mockSource,
+    },
+    {
+      id: 'hl-010',
+      eventId: 'event-001',
+      teamId: 'team-001',
+      authorUserId: 'user-004',
+      authorDisplayName: 'Сергей Волков',
+      title: 'Гол с подставы',
+      mockPreviewUrl: 'mock://highlight/hl-010',
+      uploadStatus: 'mock',
+      durationSeconds: 14,
+      sourceMeta: mockSource,
+    },
+  ]
+  mockHighlightAnnotations = [
+    {id: 'ann-001', highlightId: 'hl-001', timestampMs: 3200, type: 'arrow', payload: {x1: 20, y1: 60, x2: 75, y2: 35, label: 'Пас'}, authorUserId: 'user-001'},
+    {id: 'ann-002', highlightId: 'hl-001', timestampMs: 5200, type: 'zone', payload: {x: 55, y: 25, width: 30, height: 20, label: 'Слот'}, authorUserId: 'user-001'},
+    {id: 'ann-003', highlightId: 'hl-001', timestampMs: 8200, type: 'text', payload: {x: 10, y: 80, text: 'Открытый партнёр'}, authorUserId: 'user-003'},
+    {id: 'ann-004', highlightId: 'hl-002', timestampMs: 4100, type: 'zone', payload: {x: 15, y: 40, width: 35, height: 25, label: 'Потеря'}, authorUserId: 'user-003'},
+    {id: 'ann-005', highlightId: 'hl-002', timestampMs: 6100, type: 'arrow', payload: {x1: 40, y1: 50, x2: 80, y2: 70, label: 'Контр-ход'}, authorUserId: 'user-001'},
+    {id: 'ann-006', highlightId: 'hl-002', timestampMs: 9100, type: 'text', payload: {x: 50, y: 15, text: 'Нет связи с вратарём'}, authorUserId: 'user-001'},
+    {id: 'ann-007', highlightId: 'hl-003', timestampMs: 2000, type: 'arrow', payload: {x1: 30, y1: 45, x2: 65, y2: 45, label: 'Бросок'}, authorUserId: 'user-001'},
+    {id: 'ann-008', highlightId: 'hl-003', timestampMs: 4500, type: 'zone', payload: {x: 60, y: 30, width: 25, height: 30}, authorUserId: 'user-001'},
+    {id: 'ann-009', highlightId: 'hl-003', timestampMs: 6000, type: 'text', payload: {x: 20, y: 70, text: 'Хороший выбор угла'}, authorUserId: 'user-003'},
+    {id: 'ann-010', highlightId: 'hl-004', timestampMs: 1500, type: 'zone', payload: {x: 40, y: 35, width: 20, height: 30, label: 'Крест'}, authorUserId: 'user-004'},
+    {id: 'ann-011', highlightId: 'hl-004', timestampMs: 3500, type: 'arrow', payload: {x1: 55, y1: 40, x2: 55, y2: 65}, authorUserId: 'user-004'},
+    {id: 'ann-012', highlightId: 'hl-004', timestampMs: 5000, type: 'text', payload: {x: 65, y: 20, text: 'Реакция'}, authorUserId: 'user-001'},
+    {id: 'ann-013', highlightId: 'hl-005', timestampMs: 2800, type: 'arrow', payload: {x1: 25, y1: 55, x2: 70, y2: 40}, authorUserId: 'user-003'},
+    {id: 'ann-014', highlightId: 'hl-005', timestampMs: 5500, type: 'text', payload: {x: 40, y: 60, text: 'Своевременный пас'}, authorUserId: 'user-001'},
+    {id: 'ann-015', highlightId: 'hl-005', timestampMs: 7800, type: 'zone', payload: {x: 68, y: 28, width: 22, height: 18}, authorUserId: 'user-003'},
+    {id: 'ann-016', highlightId: 'hl-006', timestampMs: 5000, type: 'arrow', payload: {x1: 10, y1: 75, x2: 45, y2: 30}, authorUserId: 'user-001'},
+    {id: 'ann-017', highlightId: 'hl-006', timestampMs: 9000, type: 'zone', payload: {x: 5, y: 20, width: 40, height: 35, label: 'Выход'}, authorUserId: 'user-001'},
+    {id: 'ann-018', highlightId: 'hl-006', timestampMs: 12000, type: 'text', payload: {x: 55, y: 75, text: 'Смена направления'}, authorUserId: 'user-003'},
+    {id: 'ann-019', highlightId: 'hl-007', timestampMs: 6000, type: 'zone', payload: {x: 50, y: 20, width: 35, height: 40, label: 'PP'}, authorUserId: 'user-004'},
+    {id: 'ann-020', highlightId: 'hl-007', timestampMs: 11000, type: 'arrow', payload: {x1: 35, y1: 50, x2: 75, y2: 35}, authorUserId: 'user-004'},
+    {id: 'ann-021', highlightId: 'hl-007', timestampMs: 16000, type: 'text', payload: {x: 15, y: 25, text: 'Перегрузка фланга'}, authorUserId: 'user-001'},
+    {id: 'ann-022', highlightId: 'hl-008', timestampMs: 1200, type: 'arrow', payload: {x1: 50, y1: 30, x2: 50, y2: 55}, authorUserId: 'user-003'},
+    {id: 'ann-023', highlightId: 'hl-008', timestampMs: 2800, type: 'text', payload: {x: 60, y: 65, text: 'Блок'}, authorUserId: 'user-001'},
+    {id: 'ann-024', highlightId: 'hl-008', timestampMs: 4000, type: 'zone', payload: {x: 42, y: 38, width: 18, height: 22}, authorUserId: 'user-003'},
+    {id: 'ann-025', highlightId: 'hl-009', timestampMs: 2500, type: 'zone', payload: {x: 48, y: 45, width: 15, height: 12, label: 'Вброс'}, authorUserId: 'user-001'},
+    {id: 'ann-026', highlightId: 'hl-009', timestampMs: 5000, type: 'arrow', payload: {x1: 52, y1: 48, x2: 78, y2: 30}, authorUserId: 'user-001'},
+    {id: 'ann-027', highlightId: 'hl-009', timestampMs: 7500, type: 'text', payload: {x: 25, y: 55, text: 'Выигранное вбрасывание'}, authorUserId: 'user-003'},
+    {id: 'ann-028', highlightId: 'hl-010', timestampMs: 4000, type: 'arrow', payload: {x1: 20, y1: 40, x2: 72, y2: 42, label: 'Подстава'}, authorUserId: 'user-004'},
+    {id: 'ann-029', highlightId: 'hl-010', timestampMs: 8000, type: 'zone', payload: {x: 68, y: 32, width: 24, height: 22, label: 'Гол'}, authorUserId: 'user-004'},
+    {id: 'ann-030', highlightId: 'hl-010', timestampMs: 11000, type: 'text', payload: {x: 30, y: 18, text: 'Отличный тайминг'}, authorUserId: 'user-001'},
+  ]
+  mockHighlightComments = [
+    {id: 'hc-001', highlightId: 'hl-001', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Правильный выбор — отдали в слот, а не бросили сами.', createdAt: '2026-06-05T15:00:00Z'},
+    {id: 'hc-002', highlightId: 'hl-001', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'На такой скорости держи клюшку на льду для быстрого паса.', createdAt: '2026-06-05T15:10:00Z'},
+    {id: 'hc-003', highlightId: 'hl-002', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'mistake', text: 'Потеря под прессингом — нужен короткий пас на борт.', createdAt: '2026-06-05T15:20:00Z'},
+    {id: 'hc-004', highlightId: 'hl-002', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'Смотри на слабую сторону перед приёмом шайбы.', createdAt: '2026-06-05T15:25:00Z'},
+    {id: 'hc-005', highlightId: 'hl-003', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'good_play', text: 'Хороший выбор точки броска.', createdAt: '2026-06-05T15:30:00Z'},
+    {id: 'hc-006', highlightId: 'hl-004', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Вратарь закрыл угол — молодец.', createdAt: '2026-06-05T15:35:00Z'},
+    {id: 'hc-007', highlightId: 'hl-005', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'tip', text: 'Пас через центр — рискованно, но здесь оправдан.', createdAt: '2026-06-05T15:40:00Z'},
+    {id: 'hc-008', highlightId: 'hl-006', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'good_play', text: 'Спокойный выход из зоны под давлением.', createdAt: '2026-06-05T15:45:00Z'},
+    {id: 'hc-009', highlightId: 'hl-007', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'tip', text: 'В большинстве держим шайбу на фланге и меняем позиции.', createdAt: '2026-06-05T15:50:00Z'},
+    {id: 'hc-010', highlightId: 'hl-007', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'mistake', text: 'Один игрок остался без опеки у синей линии.', createdAt: '2026-06-05T15:55:00Z'},
+    {id: 'hc-011', highlightId: 'hl-008', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Своевременный блок — спасли ситуацию.', createdAt: '2026-06-05T16:00:00Z'},
+    {id: 'hc-012', highlightId: 'hl-009', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'tip', text: 'На вбрасывании первым движением — к шайбе.', createdAt: '2026-06-05T16:05:00Z'},
+    {id: 'hc-013', highlightId: 'hl-010', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Идеальная подстава на добивании.', createdAt: '2026-06-05T16:10:00Z'},
+    {id: 'hc-014', highlightId: 'hl-010', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'Держи клюшку в слоте, не опускай раньше времени.', createdAt: '2026-06-05T16:15:00Z'},
+    {id: 'hc-015', highlightId: 'hl-001', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'На контратаке второй нападающий должен идти широко.', createdAt: '2026-06-05T16:20:00Z'},
+    {id: 'hc-016', highlightId: 'hl-003', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'mistake', text: 'Можно было отдать на far post.', createdAt: '2026-06-05T16:25:00Z'},
+    {id: 'hc-017', highlightId: 'hl-005', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'good_play', text: 'Видение поля — отличный пас.', createdAt: '2026-06-05T16:30:00Z'},
+    {id: 'hc-018', highlightId: 'hl-006', authorUserId: 'user-004', authorDisplayName: 'Сергей Волков', tag: 'tip', text: 'При выходе из зоны смотри на weak side winger.', createdAt: '2026-06-05T16:35:00Z'},
+    {id: 'hc-019', highlightId: 'hl-008', authorUserId: 'user-003', authorDisplayName: 'Дмитрий Козлов', tag: 'mistake', text: 'Можно было лучше прикрыть слот после блока.', createdAt: '2026-06-05T16:40:00Z'},
+    {id: 'hc-020', highlightId: 'hl-009', authorUserId: 'user-001', authorDisplayName: 'Иван Петров', tag: 'good_play', text: 'Чистое вбрасывание — контроль с первого касания.', createdAt: '2026-06-05T16:45:00Z'},
+  ]
+}

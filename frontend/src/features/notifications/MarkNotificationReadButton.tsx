@@ -1,0 +1,33 @@
+/**
+ * SPEC-FR-10.1.2
+ */
+
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Button} from '@gravity-ui/uikit'
+import {markNotificationAsRead} from '@/features/notifications/api/notificationsApi'
+
+/** @spec SPEC-FR-10.1.2 - Props кнопки */
+export interface MarkNotificationReadButtonProps {
+  /** @spec SPEC-FR-10.1.2 */
+  notificationId: string
+}
+
+/**
+ * @spec SPEC-FR-10.1.2 - Отметить уведомление прочитанным
+ */
+export function MarkNotificationReadButton({notificationId}: MarkNotificationReadButtonProps) {
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: () => markNotificationAsRead(notificationId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({queryKey: ['notifications']})
+    },
+  })
+
+  return (
+    <Button size="s" view="flat" loading={mutation.isPending} onClick={() => mutation.mutate()}>
+      Прочитано
+    </Button>
+  )
+}

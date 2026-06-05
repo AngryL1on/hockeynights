@@ -1,0 +1,30 @@
+/**
+ * SPEC-FR-2.3.1, SPEC-FR-2.3.2
+ */
+
+import {apiRequest} from '@/shared/api/client'
+import type {PlayerListItem} from '@/entities/profile/types'
+import type {PlayerPosition, SkillLevel} from '@/entities/common/types'
+
+/** @spec SPEC-FR-2.3.2 - Параметры фильтра игроков */
+export interface PlayersFilterParams {
+  position?: PlayerPosition
+  skillLevel?: SkillLevel
+  district?: string
+  goalieOnly?: boolean
+}
+
+/**
+ * @spec SPEC-FR-2.3.1 - Список игроков
+ * @spec SPEC-FR-2.3.2 - Фильтрация
+ */
+export function fetchPlayers(filters: PlayersFilterParams = {}): Promise<PlayerListItem[]> {
+  const params = new URLSearchParams()
+  if (filters.position) params.set('position', filters.position)
+  if (filters.skillLevel) params.set('skillLevel', filters.skillLevel)
+  if (filters.district) params.set('district', filters.district)
+  if (filters.goalieOnly) params.set('goalieOnly', 'true')
+
+  const query = params.toString()
+  return apiRequest<PlayerListItem[]>(`/players${query ? `?${query}` : ''}`)
+}
