@@ -15,6 +15,7 @@ const MOBILE_NAV: MobileNavItem[] = [
   {to: '/events', label: 'События', icon: '🏒'},
   {to: '/players', label: 'Игроки', icon: '👤'},
   {to: '/teams', label: 'Команды', icon: '🛡'},
+  {to: '/messenger', label: 'Чат', icon: '💬'},
   {to: '/iq', label: 'IQ', icon: '🎯'},
   {to: '/arenas', label: 'Катки', icon: '🧊'},
   {to: '/profile', label: 'Профиль', icon: '⚙'},

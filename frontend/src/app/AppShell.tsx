@@ -35,6 +35,7 @@ const NAV_ITEMS: NavItem[] = [
   {to: '/highlights', label: 'Моменты'},
   {to: '/feedback', label: 'Feedback'},
   {to: '/notifications', label: 'Уведомления'},
+  {to: '/messenger', label: 'Мессенджер'},
   {to: '/admin', label: 'Admin'},
 ]
 
@@ -48,12 +49,25 @@ export function AppShell() {
   const {themeId, toggleTheme} = useHockeyTheme()
   const navRef = useRef<HTMLDivElement>(null)
   const [puckTop, setPuckTop] = useState(0)
+  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false)
+  const [isRightCollapsed, setIsRightCollapsed] = useState(false)
 
   const {data: notifications = []} = useQuery({
     queryKey: ['notifications'],
     queryFn: fetchNotifications,
   })
   const unreadCount = notifications.filter((n) => !n.readAt).length
+  const isMessengerRoute = location.pathname === '/messenger'
+  const isFocusMode = isLeftCollapsed && isRightCollapsed
+
+  const bodyClasses = [
+    'app-shell__body',
+    'app-shell__body--grid',
+    isLeftCollapsed ? 'app-shell__body--left-collapsed' : '',
+    isRightCollapsed ? 'app-shell__body--right-collapsed' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   useEffect(() => {
     const nav = navRef.current
@@ -74,9 +88,45 @@ export function AppShell() {
         <Button view="outlined" size="s" onClick={toggleTheme} aria-label="Переключить тему">
           {themeId === 'locker' ? '🧊 Ice' : '🏒 Locker'}
         </Button>
+        <div className="app-shell__panel-controls" aria-label="Управление панелями">
+          <Button
+            view={isLeftCollapsed ? 'action' : 'outlined'}
+            size="s"
+            onClick={() => setIsLeftCollapsed((prev) => !prev)}
+            aria-label={isLeftCollapsed ? 'Показать левую панель' : 'Свернуть левую панель'}
+          >
+            {isLeftCollapsed ? 'Показать меню' : 'Свернуть меню'}
+          </Button>
+          <Button
+            view={isRightCollapsed ? 'action' : 'outlined'}
+            size="s"
+            onClick={() => setIsRightCollapsed((prev) => !prev)}
+            aria-label={isRightCollapsed ? 'Показать правую панель' : 'Свернуть правую панель'}
+          >
+            {isRightCollapsed ? 'Показать борт' : 'Свернуть борт'}
+          </Button>
+          {isMessengerRoute && (
+            <Button
+              view="outlined"
+              size="s"
+              onClick={() => {
+                if (isFocusMode) {
+                  setIsLeftCollapsed(false)
+                  setIsRightCollapsed(false)
+                  return
+                }
+                setIsLeftCollapsed(true)
+                setIsRightCollapsed(true)
+              }}
+              aria-label={isFocusMode ? 'Выйти из фокус-режима' : 'Включить фокус-режим'}
+            >
+              {isFocusMode ? 'Обычный режим' : 'Фокус на чат'}
+            </Button>
+          )}
+        </div>
       </header>
 
-      <div className="app-shell__body app-shell__body--grid">
+      <div className={bodyClasses}>
         <nav className="app-shell__nav-col" aria-label="Основная навигация">
           <div className="hockey-nav" ref={navRef}>
             <span
@@ -110,9 +160,7 @@ export function AppShell() {
           <Outlet />
         </main>
 
-        <div className="app-shell__board-col">
-          <SideBoard />
-        </div>
+        <div className="app-shell__board-col">{!isRightCollapsed && <SideBoard />}</div>
       </div>
 
       <MobileNav />

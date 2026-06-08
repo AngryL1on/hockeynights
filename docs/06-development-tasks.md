@@ -104,6 +104,13 @@
 - [ ] `[M]` Задача `TASK-UI-15`: Рефакторинг дашбордов под Bento Grid layout (`SPEC-UI-7.3`) - оценка M. Зависимости: `TASK-UI-10`.
 - [ ] `[S]` Задача `TASK-UI-16`: Подключить `Lenis` для плавного скролла и настроить анимацию Variable Fonts (`SPEC-UI-7.4`, `SPEC-UI-7.5`) - оценка S. Зависимости: `TASK-UI-01`.
 
+### 1.14 Интегрированный мессенджер (Post-MVP/Social)
+
+- [x] `[M]` Задача `TASK-FE-40`: Создать интерфейс мессенджера (список чатов, Telegram-like бабблы, glassmorphism) (`SPEC-UI-8.1`, `SPEC-FR-16.1.1`, `SPEC-FR-16.1.5`, `SPEC-FR-16.1.6`) - оценка M. Зависимости: `TASK-UI-15`. **Реализовано:** `MessengerPage.tsx`, `ChatBubble.tsx`, `hockey-ui.css`.
+- [x] `[M]` Задача `TASK-FE-41`: Реализовать Actionable Messages (интерактивные карточки действий) (`SPEC-UI-8.2`, `SPEC-FR-16.1.3`, `SPEC-FR-16.1.4`) - оценка M. Зависимости: `TASK-FE-40`. **Реализовано:** `ActionableMessage` в `ChatBubble.tsx`.
+- [x] `[M]` Задача `TASK-MOCK-14`: Настроить MSW для чатов, сообщений и системных уведомлений об активности (`SPEC-FR-16.1.1`, `SPEC-FR-16.1.2`, `SPEC-FR-16.1.3`) - оценка M. Зависимости: `TASK-01`, `TASK-02`. **Реализовано:** `mocks/handlers/messenger.ts`, `mocks/data/messenger.ts`.
+- [x] `[S]` Задача `TASK-FE-42`: Сворачиваемые боковые панели и фокус-режим мессенджера (`SPEC-UI-5.5`, `SPEC-UI-5.6`, `SPEC-UI-8.3`, `SPEC-UI-8.4`) - оценка S. Зависимости: `TASK-FE-40`. **Реализовано:** `AppShell.tsx` (toggle left/right/focus), `hockey-ui.css` (grid collapse, borderless focus layout, unified 56px headers).
+
 ### 1.12 Возвращающие сценарии next-release
 
 - [x] `[M]` Задача `TASK-FE-30`: Создать экран `Hockey IQ` с каталогом тестов, прохождением попытки и результатом (`SPEC-FR-13.1.1`, `SPEC-FR-13.1.2`, `SPEC-UI-6.1`) - оценка M. Зависимости: `TASK-03`, `TASK-UI-03`.
@@ -150,6 +157,18 @@
 
 | SPEC-ID | Задача | Файл/компонент (предполагаемый) | Статус |
 | :--- | :--- | :--- | :--- |
+| `SPEC-FR-16.1.1` | `TASK-FE-40`, `TASK-MOCK-14` | `src/features/messenger/MessengerPage.tsx` | Done |
+| `SPEC-FR-16.1.2` | `TASK-MOCK-14`, `TASK-FE-40` | `src/mocks/handlers/messenger.ts` | Done |
+| `SPEC-FR-16.1.3` | `TASK-FE-41`, `TASK-MOCK-14` | `src/features/messenger/ChatBubble.tsx` | Done |
+| `SPEC-FR-16.1.4` | `TASK-FE-41` | `src/features/messenger/ChatBubble.tsx` | Done |
+| `SPEC-FR-16.1.5` | `TASK-FE-40` | `src/features/messenger/MessengerPage.tsx` | Done |
+| `SPEC-FR-16.1.6` | `TASK-FE-40`, `TASK-FE-42` | `src/app/routes.tsx`, `src/app/MobileNav.tsx`, `src/app/AppShell.tsx` | Done |
+| `SPEC-UI-8.1` | `TASK-FE-40` | `src/features/messenger/ChatBubble.tsx`, `src/shared/styles/hockey-ui.css` | Done |
+| `SPEC-UI-8.2` | `TASK-FE-41` | `src/features/messenger/ChatBubble.tsx` | Done |
+| `SPEC-UI-8.3` | `TASK-FE-42` | `src/shared/styles/hockey-ui.css` | Done |
+| `SPEC-UI-8.4` | `TASK-FE-42` | `src/shared/styles/hockey-ui.css` | Done |
+| `SPEC-UI-5.5` | `TASK-FE-42` | `src/app/AppShell.tsx`, `src/shared/styles/hockey-ui.css` | Done |
+| `SPEC-UI-5.6` | `TASK-FE-42` | `src/app/AppShell.tsx` | Done |
 | `SPEC-FR-1.1.1` | `TASK-QA-01`, `TASK-QA-02` | `docs/05-srs.md`, `tests/spec-traceability.spec.ts` | Planned |
 | `SPEC-FR-1.2.1` | `TASK-03` | `src/app/AppShell.tsx`, `src/routes/index.tsx` | Planned |
 | `SPEC-FR-1.2.2` | `TASK-00` | `package.json`, `src/main.tsx` | Planned |
@@ -264,4 +283,3 @@
 - `TASK-BE-14` заблокирован до выбора storage/CDN, правил приватности видео и модерации пользовательского контента.
 - `TASK-BE-15` зависит от качества данных профиля, событий, арен и согласия пользователя на гео/персонализацию.
 - Реальная авторизация и персональные данные требуют отдельного юридического решения до production-запуска.
-

@@ -16,6 +16,7 @@ import {externalFlowHandlers} from '@/mocks/handlers/external-flows'
 import {iqHandlers} from '@/mocks/handlers/iq'
 import {radarHandlers} from '@/mocks/handlers/radar'
 import {highlightHandlers} from '@/mocks/handlers/highlights'
+import {messengerHandlers} from '@/mocks/handlers/messenger'
 
 /** @spec SPEC-FR-12.1.2 - Все MSW handlers Phase 1 */
 export const handlers = [
@@ -33,4 +34,5 @@ export const handlers = [
   ...iqHandlers,
   ...radarHandlers,
   ...highlightHandlers,
+  ...messengerHandlers,
 ]

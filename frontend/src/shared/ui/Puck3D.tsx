@@ -5,6 +5,7 @@
 import {useRef, useState} from 'react'
 import {Canvas, useFrame} from '@react-three/fiber'
 import {MeshDistortMaterial, Float, PerspectiveCamera} from '@react-three/drei'
+import {Text} from '@gravity-ui/uikit'
 import * as THREE from 'three'
 
 function PuckMesh() {
@@ -40,7 +41,37 @@ function PuckMesh() {
   )
 }
 
+function isWebGLSupported() {
+  if (typeof window === 'undefined') return false
+  try {
+    const canvas = document.createElement('canvas')
+    return Boolean(
+      canvas.getContext('webgl2') ||
+        canvas.getContext('webgl') ||
+        canvas.getContext('experimental-webgl'),
+    )
+  } catch {
+    return false
+  }
+}
+
 export function Puck3D() {
+  if (!isWebGLSupported()) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '200px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text color="secondary">3D-preview недоступен в этой среде</Text>
+      </div>
+    )
+  }
+
   return (
     <div style={{width: '100%', height: '200px', cursor: 'pointer'}}>
       <Canvas shadows>

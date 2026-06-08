@@ -90,6 +90,7 @@
 | `Hockey IQ` | Мини-тесты по правилам, тактике и хоккейным ситуациям | Mock quiz catalog, attempt flow, leaderboard | Rule/tactics content CMS, anti-cheat, seasonal ratings |
 | `Highlight Analysis` | Загрузка коротких моментов, разметка стрелками и комментарии | Mock upload, local preview, annotation JSON | Video storage, transcoding, signed URLs, coach comments |
 | `Ice Radar` | Персональные рекомендации «что сделать сегодня» | Mock recommendation cards from existing events/SOS/arenas | Recommendation service, geo/time matching, notification triggers |
+| `Messenger` | Командные и событийные чаты, actionable activity feed | Mock chats/messages, local optimistic send, focus layout | WebSocket/push, chat service, activity pipeline from bookings/SOS |
 
 ## Расширения продукта: возвращающие сценарии
 
@@ -100,6 +101,7 @@
 | `Hockey IQ` | Игрок проходит короткий тест, получает очки, серию и место в рейтинге. | `React + TS`, `Gravity UI`, `TanStack Query`, `MSW` для вопросов, попыток и leaderboard. | CMS/админка вопросов, античит, сезонные рейтинги, партнерские призы. |
 | `Highlight Analysis` | Игрок загружает короткий момент, ставит паузу, рисует стрелки и получает комментарии. | Mock upload без реального файла: DTO момента, annotation layer, comments. | S3/Object Storage, CDN, video transcoding, signed upload URL, moderation, coach accounts. |
 | `Ice Radar` | Система собирает релевантные подсказки: ближайший лёд, SOS, игра по району, попутчик. | Mock recommendations, собранные из существующих `events`, `arenas`, `recruitment-requests`. | Геолокация, маршруты, push, персональный ranking model, интеграции карт. |
+| `Messenger` | Игрок/капитан общается в чатах команды и события; системные действия (бронь, заявки) приходят как actionable-карточки. | `React + TS`, `MSW` (`/messenger/chats`, messages, actions), collapsible app shell, focus mode. | Realtime (WebSocket), chat persistence, push, activity bus из booking/SOS/roster. |
 
 ### Потоки данных новых функций
 
@@ -127,6 +129,15 @@
 4. Пользователь кликает рекомендацию и переходит в событие, SOS или арену.
 5. В Phase 2 backend ранжирует рекомендации по роли, району, времени, доступности и истории участия.
 
+#### Messenger
+
+1. Пользователь открывает `/messenger` из desktop-nav или mobile bottom nav.
+2. Frontend запрашивает `GET /mock-api/v1/messenger/chats` и автоматически выбирает первый чат.
+3. Сообщения загружаются через `GET /mock-api/v1/messenger/chats/{chatId}/messages`; actionable-карточки рендерятся внутри ленты.
+4. Отправка текста на Phase 1 — optimistic update в локальном state; `POST` сообщений на сервер — Phase 2.
+5. Кнопка «Фокус на чат» сворачивает левую навигацию и правый борт; мессенджер занимает всю область под шапкой без карточной рамки (`SPEC-UI-5.6`, `SPEC-UI-8.3`).
+6. Действия из карточек отправляются в `POST /mock-api/v1/messenger/actions/{actionId}`; в Phase 2 — в activity/chat service с push-уведомлениями.
+
 ## Дизайн-система и UX-принципы
 
 ### Бренд-концепции (выбор для MVP)
@@ -146,6 +157,22 @@
 | **Bento Dashboards** | Тактическая доска | Модульные сетки (Bento Grids) для профиля игрока и матч-центра. |
 | **Типографика** | Заголовки табло | Крупные акцидентные шрифты с анимацией начертания (Variable Fonts). |
 | **Smooth Flow** | Скольжение | Мягкий скролл (`Lenis`) для премиального ощущения от интерфейса. |
+| **Живые чаты** | Раздевалка 2.0 | Интегрированный мессенджер с Actionable Messages для координации событий. |
+
+### 5. Интегрированный мессенджер и «Живые чаты» (SPEC-UI-8.x)
+Для усиления социального взаимодействия и упрощения координации, в систему внедряется мессенджер, который становится центром активности:
+
+*   **Контекстные чаты**: Автоматическое создание чатов для каждой команды и каждого игрового события.
+*   **Actionable Messages (Интерактивные карточки)**: Любое действие в системе (бронирование льда, вступление в игру, SOS-запрос) отображается в чате не просто текстом, а интерактивной карточкой.
+    *   *Пример*: Капитан забронировал слот -> в чате команды появилась карточка «Лёд забронирован» с кнопкой «Добавить в календарь».
+    *   *Пример*: Игрок нажал «Пойду» на событие -> в чате события появилось системное сообщение «+1 защитник».
+*   **Bento-Messenger**: Интерфейс мессенджера вписывается в общую концепцию Bento Grid, позволяя видеть список чатов и активное окно как модули единого дашборда.
+*   **Telegram-like UI (Phase 1 mock)**: Список чатов с аватарами, отступами между элементами, бейджами непрочитанного; бабблы с «хвостиком», временем и статусом прочтения; actionable-карточки внутри ленты.
+*   **Сворачиваемый layout (SPEC-UI-5.5)**: На desktop (≥1200px) левая навигация и правый «борт» (`SideBoard`) сворачиваются отдельными кнопками в шапке; grid перестраивается без потери ширины контентной колонки.
+*   **Фокус-режим чата (SPEC-UI-5.6, SPEC-UI-8.3)**: На маршруте `/messenger` кнопка «Фокус на чат» одновременно скрывает обе боковые панели; мессенджер занимает всю ширину и высоту под шапкой без карточной рамки, скруглений и тени — контент сливается с общим фоном приложения.
+*   **Единая высота тулбаров (SPEC-UI-8.4)**: Заголовок «Мессенджер» в списке чатов и заголовок активного диалога имеют одинаковую высоту (56px) и выровненную нижнюю границу.
+*   **Голосовые «рации»**: Быстрые голосовые сообщения для оперативной связи перед игрой (стилизовано под переговоры судей/тренеров) — post-MVP.
+*   **Премиальный UI**: Стеклянные бабблы (Glassmorphism), магнитные кнопки реакций и плавный скролл истории.
 
 ### Палитра (design tokens, ориентир)
 
@@ -388,6 +415,7 @@ sequenceDiagram
 | Hockey IQ | `IqTest`, `IqQuestion`, `IqAttempt`, `IqLeaderboardRow` | Mock quiz fixtures | CMS/admin content, ratings, anti-cheat |
 | Highlights | `Highlight`, `HighlightAnnotation`, `HighlightComment` | Mock video metadata and annotation JSON | Object storage, transcoding, CDN, moderation |
 | Ice Radar | `RadarRecommendation`, `RadarAction`, `ReasonCode` | Mock recommendations from existing fixtures | Geo/routing APIs, ranking service, push triggers |
+| Messenger | `Chat`, `Message`, `ActionableMessageData`, `ChatAction` | Mock chat fixtures, local send state | Chat DB, WebSocket gateway, activity event bus |
 
 ## Основные продуктовые потоки
 

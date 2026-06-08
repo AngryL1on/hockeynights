@@ -236,7 +236,18 @@
 | `SPEC-FR-15.1.2` | Рекомендация должна содержать причину показа, расстояние/район, время, приоритет и целевой переход. | High | `SPEC-FR-15.1.1`, `SPEC-FR-12.1.2` | reason, targetRoute, priority / 5 SP |
 | `SPEC-FR-15.1.3` | Пользователь должен скрыть рекомендацию или перейти по ней; действие должно сохраняться в mock state. | Mid | `SPEC-FR-15.1.1`, `SPEC-FR-10.1.1` | dismiss/action event / 8 SP |
 
-### 16. UI/UX дизайн-система (SPEC-UI-1.1 - SPEC-UI-6.6)
+### 16.1 Интегрированный мессенджер (SPEC-FR-16.1.1 - SPEC-FR-16.1.6)
+
+| ID | Требование | Приоритет | Зависимости | Данные / SP |
+| :--- | :--- | :--- | :--- | :--- |
+| `SPEC-FR-16.1.1` | Система должна автоматически создавать чаты для каждой команды и каждого игрового события (игры/тренировки). | High | `SPEC-FR-3.1.1`, `SPEC-FR-4.1.1` | ChatRoom DTO / 5 SP |
+| `SPEC-FR-16.1.2` | Пользователи должны обмениваться текстовыми сообщениями и реакциями в контексте события или команды. | High | `SPEC-FR-16.1.1` | ChatMessage DTO / 8 SP |
+| `SPEC-FR-16.1.3` | Система должна отправлять в чат Actionable Messages (интерактивные карточки) при ключевых действиях: бронирование, изменение состава, SOS. | High | `SPEC-FR-6.4.2`, `SPEC-FR-3.3.1`, `SPEC-FR-5.1.1` | ActivityCard DTO / 13 SP |
+| `SPEC-FR-16.1.4` | Пользователь должен иметь возможность совершить действие (например, «Подтвердить участие») прямо из карточки в чате. | Mid | `SPEC-FR-16.1.3`, `SPEC-FR-3.3.1` | Action Callback / 8 SP |
+| `SPEC-FR-16.1.5` | Пользователь должен отправлять текстовые сообщения в выбранный чат; на Phase 1 сообщения сохраняются в локальном mock state без realtime. | High | `SPEC-FR-16.1.2` | optimistic send / 5 SP |
+| `SPEC-FR-16.1.6` | Мессенджер должен быть доступен из основной навигации приложения (`/messenger`) и mobile bottom nav. | High | `SPEC-FR-1.2.1`, `SPEC-FR-16.1.1` | route + nav item / 3 SP |
+
+### 17. UI/UX дизайн-система (SPEC-UI-1.1 - SPEC-UI-8.4)
 
 Требования `SPEC-UI-*` дополняют функциональные `SPEC-FR-*` визуальным и поведенческим слоем. Реализация — поверх `Gravity UI` без изменения API-контрактов.
 
@@ -280,7 +291,7 @@
 | `SPEC-UI-4.3` | Переключение вкладок навигации: индикатор-шайба скользит между пунктами за 180–220 ms. | `SPEC-FR-1.2.1`, `SPEC-NFR-5` |
 | `SPEC-UI-4.4` | SOS-события и критичные уведомления могут использовать ограниченную красную пульсацию (не более 2 циклов); звук свистка опционален и выключен по умолчанию. | `SPEC-FR-5.1.3`, `SPEC-FR-10.1.1` |
 
-#### 16.5 Адаптивность и доступность (SPEC-UI-5.1 - SPEC-UI-5.4)
+#### 16.5 Адаптивность и доступность (SPEC-UI-5.1 - SPEC-UI-5.6)
 
 | ID | Требование | Влияет на SPEC-FR |
 | :--- | :--- | :--- |
@@ -288,6 +299,8 @@
 | `SPEC-UI-5.2` | Mobile: один столбец, bottom navigation, sticky FAB для SOS (контекстно для вратаря/капитана). | `SPEC-FR-1.2.1`, `SPEC-FR-5.2.2`, `SPEC-NFR-7` |
 | `SPEC-UI-5.3` | При `prefers-reduced-motion: reduce` decorative-анимации (шайба, бегущая строка, пульсация) отключаются; функциональные состояния сохраняются. | `SPEC-NFR-5`, `SPEC-NFR-10` |
 | `SPEC-UI-5.4` | Контраст текста и CTA должен соответствовать WCAG AA в обеих темах; красный SOS не единственный носитель смысла (дублируется текстом/иконкой). | `SPEC-FR-5.1.3`, `SPEC-NFR-5` |
+| `SPEC-UI-5.5` | На desktop (≥1200px) левая навигация и правый борт (`SideBoard`) должны сворачиваться независимо кнопками в шапке; при сворачивании контентная колонка сохраняет полную ширину (корректная CSS Grid-раскладка без схлопывания main). | `SPEC-FR-1.2.1`, `SPEC-UI-5.1` |
+| `SPEC-UI-5.6` | На маршруте мессенджера должна быть кнопка «Фокус на чат», одновременно скрывающая обе боковые панели и возвращающая их по «Обычный режим». | `SPEC-FR-16.1.6`, `SPEC-UI-5.5`, `SPEC-UI-8.3` |
 
 #### 16.6 UI новых возвращающих сценариев (SPEC-UI-6.1 - SPEC-UI-6.6)
 
@@ -310,6 +323,15 @@
 | `SPEC-UI-7.4` | Интерфейс должен поддерживать «мягкий скролл» (`Lenis`) для создания ощущения плавного скольжения по льду. | `SPEC-NFR-1`, `SPEC-NFR-5` |
 | `SPEC-UI-7.5` | Заголовки должны использовать вариативные шрифты (Variable Fonts) с плавной анимацией веса или ширины при взаимодействии. | `SPEC-UI-1.5`, `SPEC-NFR-1` |
 
+#### 17.8 Мессенджер и чаты (SPEC-UI-8.1 - SPEC-UI-8.4)
+
+| ID | Требование | Влияет на SPEC-FR |
+| :--- | :--- | :--- |
+| `SPEC-UI-8.1` | Интерфейс чата: двухколоночная раскладка (список диалогов + активный чат); glassmorphism-бабблы в стиле современных мессенджеров (Telegram-like): аватары в списке, отступы между чатами, «хвостик» у баббла, время и статус прочтения; отправка по Enter. | `SPEC-FR-16.1.2`, `SPEC-FR-16.1.5`, `SPEC-UI-7.3` |
+| `SPEC-UI-8.2` | Actionable Messages должны визуально выделяться как «инфо-блоки табло» (`IceCard`) с кнопками действий внутри ленты сообщений. | `SPEC-FR-16.1.3`, `SPEC-FR-16.1.4` |
+| `SPEC-UI-8.3` | В фокус-режиме мессенджер не использует карточную оболочку: без рамки, скруглений, тени и внешних отступов main; фон прозрачный, высота — от шапки до низа viewport; тонкие разделители только между sidebar / header / input. | `SPEC-UI-5.6`, `SPEC-FR-16.1.6` |
+| `SPEC-UI-8.4` | Заголовок списка («Мессенджер») и заголовок активного чата имеют одинаковую высоту (56px), вертикальное выравнивание текста и общую нижнюю границу. | `SPEC-UI-8.1`, `SPEC-FR-16.1.2` |
+
 ### Матрица SPEC-UI → SPEC-FR (сводная)
 
 | SPEC-UI | Основные SPEC-FR |
@@ -318,8 +340,9 @@
 | `SPEC-UI-2.1`–`2.8` | `SPEC-FR-2.3.1`, `SPEC-FR-3.2.1`, `SPEC-FR-4.1.1`, `SPEC-FR-4.2.1`, `SPEC-FR-5.2.1`, `SPEC-FR-6.2.1`, `SPEC-FR-7.2.1` |
 | `SPEC-UI-3.1`–`3.3` | `SPEC-NFR-10`, `SPEC-FR-5.1.1`, `SPEC-FR-6.1.1` |
 | `SPEC-UI-4.1`–`4.4` | `SPEC-FR-1.2.1`, `SPEC-FR-5.1.3`, `SPEC-FR-10.1.1`, `SPEC-NFR-5`, `SPEC-NFR-7` |
-| `SPEC-UI-5.1`–`5.4` | `SPEC-FR-1.2.1`, `SPEC-FR-5.2.1`, `SPEC-NFR-5`, `SPEC-NFR-7` |
+| `SPEC-UI-5.1`–`5.6` | `SPEC-FR-1.2.1`, `SPEC-FR-5.2.1`, `SPEC-FR-16.1.6`, `SPEC-NFR-5`, `SPEC-NFR-7` |
 | `SPEC-UI-6.1`–`6.6` | `SPEC-FR-13.1.1`–`SPEC-FR-15.1.3`, `SPEC-NFR-5`, `SPEC-NFR-7`, `SPEC-NFR-9` |
+| `SPEC-UI-8.1`–`8.4` | `SPEC-FR-16.1.2`–`SPEC-FR-16.1.6`, `SPEC-UI-5.6` |
 
 ## 3. Пользовательские истории (SPEC-FR-2.1.1 - SPEC-FR-15.1.3)
 
@@ -340,6 +363,7 @@
 | `US-13` | Как игрок, я хочу проходить `Hockey IQ` тесты, чтобы проверить понимание правил и игровых решений между матчами. | Каталог тестов доступен; попытка сохраняется; результат и объяснения показаны; leaderboard обновляется mock-данными. | `SPEC-FR-13.1.1`, `SPEC-FR-13.1.2`, `SPEC-FR-13.1.3`, `SPEC-UI-6.1`, `SPEC-UI-6.2` |
 | `US-14` | Как капитан или игрок, я хочу разобрать короткий момент с игры, чтобы понять ошибку или удачное решение. | Mock-момент создан; разметка сохраняется; комментарии видны; mock upload явно обозначен. | `SPEC-FR-14.1.1`, `SPEC-FR-14.1.2`, `SPEC-FR-14.1.3`, `SPEC-FR-14.1.4`, `SPEC-UI-6.3`, `SPEC-UI-6.4` |
 | `US-15` | Как игрок, я хочу видеть ледовый радар, чтобы быстро выбрать полезное действие на сегодня. | Рекомендации отображаются с причиной; переход ведёт в целевой сценарий; рекомендацию можно скрыть. | `SPEC-FR-15.1.1`, `SPEC-FR-15.1.2`, `SPEC-FR-15.1.3`, `SPEC-UI-6.5`, `SPEC-UI-6.6` |
+| `US-16` | Как игрок или капитан, я хочу общаться в командных и событийных чатах и видеть активность (бронирование, заявки, SOS) как интерактивные сообщения. | Чаты доступны из навигации; список и переписка отображаются; можно отправить текст; actionable-карточки кликабельны; фокус-режим разворачивает чат на весь экран. | `SPEC-FR-16.1.1`–`SPEC-FR-16.1.6`, `SPEC-UI-8.1`–`SPEC-UI-8.4`, `SPEC-UI-5.5`, `SPEC-UI-5.6` |
 
 ## 4. Use Case диаграмма (SPEC-FR-2.1.1 - SPEC-FR-15.1.3)
 
@@ -664,6 +688,47 @@ export interface RadarRecommendation {
   dismissedAt?: string; // SPEC-FR-15.1.3
 }
 
+export type ChatType = 'team' | 'event' | 'direct' | 'system'; // SPEC-FR-16.1.1
+
+export interface Chat {
+  id: string; // SPEC-FR-16.1.1
+  type: ChatType; // SPEC-FR-16.1.1
+  title: string; // SPEC-FR-16.1.1
+  avatarUrl?: string; // SPEC-UI-8.1
+  lastMessage?: Message; // SPEC-FR-16.1.2
+  unreadCount: number; // SPEC-UI-8.1
+  relatedEntityId?: string; // SPEC-FR-16.1.1
+}
+
+export type MessageType = 'text' | 'actionable' | 'system'; // SPEC-FR-16.1.2
+
+export interface Message {
+  id: string; // SPEC-FR-16.1.2
+  chatId: string; // SPEC-FR-16.1.2
+  senderId: string; // SPEC-FR-16.1.2
+  senderName: string; // SPEC-FR-16.1.2
+  senderAvatarUrl?: string; // SPEC-UI-8.1
+  type: MessageType; // SPEC-FR-16.1.2, SPEC-FR-16.1.3
+  content: string; // SPEC-FR-16.1.2
+  timestamp: string; // SPEC-UI-8.1
+  actionData?: ActionableMessageData; // SPEC-FR-16.1.3
+}
+
+export interface ActionableMessageData {
+  type: 'booking' | 'join_team' | 'sos_response' | 'payment'; // SPEC-FR-16.1.3
+  title: string; // SPEC-FR-16.1.3
+  description: string; // SPEC-FR-16.1.3
+  status: 'pending' | 'completed' | 'cancelled'; // SPEC-FR-16.1.3
+  actions: ChatAction[]; // SPEC-FR-16.1.4
+}
+
+export interface ChatAction {
+  id: string; // SPEC-FR-16.1.4
+  label: string; // SPEC-FR-16.1.4
+  action: string; // SPEC-FR-16.1.4
+  style?: 'primary' | 'secondary' | 'danger'; // SPEC-UI-8.2
+}
+
 export interface SourceMeta {
   source: 'mock' | 'manual' | 'partner_api' | 'import' | 'external'; // SPEC-FR-11.2.2
   sourceUrl?: string; // SPEC-FR-11.2.2
@@ -672,7 +737,7 @@ export interface SourceMeta {
 }
 ```
 
-## 6. API контракты mock-версии (SPEC-FR-2.1.1 - SPEC-FR-15.1.3)
+## 6. API контракты mock-версии (SPEC-FR-2.1.1 - SPEC-FR-16.1.6)
 
 Базовый префикс Phase 1: `/mock-api/v1`. Все ответы должны быть совместимы с будущим `/api/v1` по структуре DTO (`SPEC-FR-12.1.2`).
 
@@ -723,6 +788,9 @@ export interface SourceMeta {
 | `POST` | `/mock-api/v1/highlights/{highlightId}/comments` | Добавить тренерский или капитанский комментарий | `SPEC-FR-14.1.3` |
 | `GET` | `/mock-api/v1/radar/recommendations` | Получить рекомендации `Ice Radar` | `SPEC-FR-15.1.1`, `SPEC-FR-15.1.2` |
 | `PATCH` | `/mock-api/v1/radar/recommendations/{recommendationId}` | Скрыть рекомендацию или зафиксировать переход | `SPEC-FR-15.1.3` |
+| `GET` | `/mock-api/v1/messenger/chats` | Получить список чатов пользователя | `SPEC-FR-16.1.1`, `SPEC-FR-16.1.6` |
+| `GET` | `/mock-api/v1/messenger/chats/{chatId}/messages` | Получить сообщения чата | `SPEC-FR-16.1.2` |
+| `POST` | `/mock-api/v1/messenger/actions/{actionId}` | Выполнить действие из actionable-сообщения | `SPEC-FR-16.1.4` |
 
 ### 6.1 Пример mock response профиля (SPEC-FR-2.2.1, SPEC-FR-12.1.2)
 
@@ -768,13 +836,14 @@ export interface SourceMeta {
 }
 ```
 
-### 6.3 Mock-данные для новых возвращающих сценариев (SPEC-FR-13.1.1 - SPEC-FR-15.1.3)
+### 6.3 Mock-данные для новых возвращающих сценариев (SPEC-FR-13.1.1 - SPEC-FR-16.1.6)
 
 | Функция | Mock DTO / fixture | Минимальный объём | Нужные связи |
 | :--- | :--- | :--- | :--- |
 | `Hockey IQ` | `IqTest`, `IqQuestion`, `IqAttempt`, `IqLeaderboardRow` | 3 теста, 20 вопросов, 10 попыток, 20 строк рейтинга | `userId`, `position`, `skillLevel` из `Hockey ID` |
 | `Highlight Analysis` | `Highlight`, `HighlightAnnotation`, `HighlightComment` | 10 моментов, 30 annotations, 20 comments | `eventId`, `teamId`, `authorUserId`, `sourceMeta` |
 | `Ice Radar` | `RadarRecommendation`, `RadarAction` | 10 активных рекомендаций, 5 dismissed/action events | `eventId`, `arenaId`, `requestId`, `targetRoute`, `reasonCode` |
+| `Messenger` | `Chat`, `Message`, `ActionableMessageData`, `ChatAction` | 3 чата (team/event/system), 10+ сообщений, 2 actionable-карточки | `relatedEntityId` → team/event, `senderId` → mock users |
 
 ## 7. Нефункциональные требования (SPEC-NFR-1 - SPEC-NFR-10)
 
@@ -831,6 +900,7 @@ export interface SourceMeta {
 - `SPEC-UI-4.1`–`SPEC-UI-4.2` MVP включает светлую и тёмную тему с переключением в `ThemeProvider`.
 - `SPEC-FR-15.1.1`–`SPEC-FR-15.1.3` допускаются как MVP-extension в mock-режиме: `Ice Radar` строится только из уже существующих событий, SOS и арен.
 - `SPEC-UI-6.5`–`SPEC-UI-6.6` входят в MVP-extension для визуализации `Ice Radar`.
+- `SPEC-FR-16.1.1`–`SPEC-FR-16.1.6` и `SPEC-UI-8.1`–`SPEC-UI-8.4`, `SPEC-UI-5.5`–`SPEC-UI-5.6` допускаются как MVP-extension в mock-режиме: мессенджер без realtime и без автогенерации чатов из backend-событий (фикстуры MSW).
 
 ### 8.2 Не входит в MVP (SPEC-FR-12.1.1 - SPEC-FR-12.1.3)
 
@@ -843,8 +913,9 @@ export interface SourceMeta {
 - `SPEC-UI-5.2` MVP не включает полноценные swipe-жесты смены звеньев (достаточно bottom nav).
 - `SPEC-FR-13.1.1`–`SPEC-FR-13.1.3` не входят в основной MVP; `Hockey IQ` планируется как next release после подтверждения контентной модели вопросов.
 - `SPEC-FR-14.1.1`–`SPEC-FR-14.1.4` не входят в основной MVP; `Highlight Analysis` требует отдельного решения по хранению видео, модерации и приватности.
+- `SPEC-FR-16.1.1`–`SPEC-FR-16.1.6` Phase 1 не включают realtime-доставку, голосовые сообщения и серверную синхронизацию отправленных сообщений (optimistic local state).
 
-## 9. Матрица трассировки модулей (SPEC-FR-2.1.1 - SPEC-FR-15.1.3)
+## 9. Матрица трассировки модулей (SPEC-FR-2.1.1 - SPEC-FR-16.1.6)
 
 | Модуль | SPEC ID |
 | :--- | :--- |
@@ -860,9 +931,10 @@ export interface SourceMeta {
 | `Notifications` | `SPEC-FR-10.1.1`, `SPEC-FR-10.1.2` |
 | `Admin Console` | `SPEC-FR-11.1.1`, `SPEC-FR-11.1.2`, `SPEC-FR-11.2.1`, `SPEC-FR-11.2.2` |
 | `Frontend Platform` | `SPEC-FR-12.1.1`, `SPEC-FR-12.1.2`, `SPEC-FR-12.1.3`, `SPEC-NFR-1`, `SPEC-NFR-2`, `SPEC-NFR-3`, `SPEC-NFR-4` |
-| `Design System` | `SPEC-UI-1.1`–`SPEC-UI-5.4`, `SPEC-FR-1.2.2`, `SPEC-NFR-5`, `SPEC-NFR-7`, `SPEC-NFR-10` |
+| `Design System` | `SPEC-UI-1.1`–`SPEC-UI-5.6`, `SPEC-UI-8.1`–`SPEC-UI-8.4`, `SPEC-FR-1.2.2`, `SPEC-NFR-5`, `SPEC-NFR-7`, `SPEC-NFR-10` |
 | `Leagues` (UI) | `SPEC-UI-2.7`, `SPEC-UI-2.8`, `SPEC-FR-7.1.2`, `SPEC-FR-7.2.1`, `SPEC-FR-7.2.2` |
 | `Hockey IQ` | `SPEC-FR-13.1.1`, `SPEC-FR-13.1.2`, `SPEC-FR-13.1.3`, `SPEC-UI-6.1`, `SPEC-UI-6.2` |
 | `Highlight Analysis` | `SPEC-FR-14.1.1`, `SPEC-FR-14.1.2`, `SPEC-FR-14.1.3`, `SPEC-FR-14.1.4`, `SPEC-UI-6.3`, `SPEC-UI-6.4` |
 | `Ice Radar` | `SPEC-FR-15.1.1`, `SPEC-FR-15.1.2`, `SPEC-FR-15.1.3`, `SPEC-UI-6.5`, `SPEC-UI-6.6` |
+| `Messenger` | `SPEC-FR-16.1.1`–`SPEC-FR-16.1.6`, `SPEC-UI-8.1`–`SPEC-UI-8.4`, `SPEC-UI-5.5`, `SPEC-UI-5.6` |
 

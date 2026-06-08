@@ -20,6 +20,7 @@ import {AdminDashboard} from '@/features/admin/AdminDashboard'
 import {IqTestsPage} from '@/features/iq/IqTestsPage'
 import {IceRadarPage} from '@/features/radar/IceRadarPage'
 import {HighlightsPage} from '@/features/highlights/HighlightsPage'
+import {MessengerPage} from '@/features/messenger/MessengerPage'
 
 /**
  * @spec SPEC-FR-1.2.1 - Маршрутизация MVP
@@ -40,6 +41,7 @@ export function AppRoutes() {
         <Route path="/leagues" element={<LeaguesPage />} />
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/messenger" element={<MessengerPage />} />
         <Route path="/shops" element={<ShopsPage />} />
         <Route path="/iq" element={<IqTestsPage />} />
         <Route path="/radar" element={<IceRadarPage />} />

@@ -14,7 +14,6 @@ import {LeagueStandings} from '@/features/leagues/LeagueStandings'
 import {IceCard} from '@/shared/ui/IceCard'
 import {HockeyButton} from '@/shared/ui/HockeyButton'
 import {ScoreboardText} from '@/shared/ui/ScoreboardText'
-import {Puck3D} from '@/shared/ui/Puck3D'
 
 /**
  * @spec SPEC-UI-5.1 - Борт с SOS, слотами и топом таблицы
@@ -45,7 +44,10 @@ export function SideBoard() {
   return (
     <aside className="side-board" aria-label="Борт арены">
       <IceCard padding="s">
-        <Puck3D />
+        <div style={{textAlign: 'center', padding: '18px 0'}}>
+          <ScoreboardText tone="accent">HOCKEY SOCIAL</ScoreboardText>
+          <Text color="secondary">Панель событий и подсказок</Text>
+        </div>
       </IceCard>
 
       <IceCard padding="s">
