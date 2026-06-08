@@ -1,13 +1,17 @@
-name: Deploy to Proxmox
+name: CI
 
 on:
   push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/${{ github.repository }}
+  IMAGE_NAME: ghcr.io/angryl1on/hockeynights
 
 jobs:
   test:
@@ -29,10 +33,29 @@ jobs:
       - run: npm test
       - run: npm run build
 
-  deploy:
+  build-image:
     needs: test
     runs-on: ubuntu-latest
-    if: github.repository == 'AngryL1on/hockeynights'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: false
+          tags: hockeynights:ci
+          build-args: |
+            VITE_API_MODE=backend
+            VITE_BACKEND_URL=/api/v1
+
+  deploy:
+    needs: build-image
+    runs-on: ubuntu-latest
+    if: >-
+      github.repository == 'AngryL1on/hockeynights' &&
+      github.ref == 'refs/heads/main' &&
+      github.event_name != 'pull_request'
     permissions:
       contents: read
       packages: write
