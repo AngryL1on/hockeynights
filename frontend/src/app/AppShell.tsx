@@ -1,15 +1,15 @@
 /**
  * SPEC-FR-1.2.1, SPEC-FR-1.2.4
- * SPEC-UI-4.3, SPEC-UI-5.1, SPEC-UI-5.2, SPEC-UI-6.1
+ * SPEC-UI-4.3, SPEC-UI-5.1, SPEC-UI-5.2, SPEC-UI-5.5, SPEC-UI-5.6, SPEC-UI-6.1
  */
 
 import {useEffect, useRef, useState} from 'react'
 import {Link, Outlet, useLocation} from 'react-router-dom'
 import {useQuery} from '@tanstack/react-query'
-import {Button, Text} from '@gravity-ui/uikit'
 import {fetchNotifications} from '@/features/notifications/api/notificationsApi'
 import {LAUNCH_REGION} from '@/shared/config/geo'
 import {useHockeyTheme} from '@/shared/theme/HockeyThemeProvider'
+import {HockeyButton} from '@/shared/ui/HockeyButton'
 import {MobileNav} from '@/app/MobileNav'
 import {SideBoard} from '@/app/SideBoard'
 import {SosFab} from '@/app/SosFab'
@@ -39,6 +39,12 @@ const NAV_ITEMS: NavItem[] = [
   {to: '/admin', label: 'Admin'},
 ]
 
+function formatPeriodClock(): string {
+  const now = new Date()
+  const period = now.getHours() < 12 ? '1-й' : now.getHours() < 18 ? '2-й' : '3-й'
+  return `${period} · ${now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})}`
+}
+
 /**
  * @spec SPEC-FR-1.2.1 - Базовый layout приложения
  * @spec SPEC-UI-5.1 - Desktop 3-col layout
@@ -49,6 +55,7 @@ export function AppShell() {
   const {themeId, toggleTheme} = useHockeyTheme()
   const navRef = useRef<HTMLDivElement>(null)
   const [puckTop, setPuckTop] = useState(0)
+  const [periodClock, setPeriodClock] = useState(formatPeriodClock)
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false)
   const [isRightCollapsed, setIsRightCollapsed] = useState(false)
 
@@ -74,55 +81,76 @@ export function AppShell() {
     if (!nav) return
     const active = nav.querySelector<HTMLElement>('[data-active="true"]')
     if (active) {
-      setPuckTop(active.offsetTop + active.offsetHeight / 2 - 3)
+      setPuckTop(active.offsetTop + active.offsetHeight / 2 - 4)
     }
   }, [location.pathname])
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setPeriodClock(formatPeriodClock()), 60_000)
+    return () => window.clearInterval(timer)
+  }, [])
 
   return (
     <div className="app-shell">
       <header className="app-shell__header">
-        <div>
-          <Text variant="header-2">Hockey Social</Text>
-          <Text color="secondary">{LAUNCH_REGION}</Text>
+        <div className="app-shell__brand">
+          <div className="app-shell__crest" aria-hidden>
+            <span className="app-shell__crest-icon">🏒</span>
+          </div>
+          <div className="app-shell__brand-text">
+            <span className="app-shell__title">Hockey Nights</span>
+            <span className="app-shell__region">{LAUNCH_REGION}</span>
+          </div>
         </div>
-        <Button view="outlined" size="s" onClick={toggleTheme} aria-label="Переключить тему">
-          {themeId === 'locker' ? '🧊 Ice' : '🏒 Locker'}
-        </Button>
-        <div className="app-shell__panel-controls" aria-label="Управление панелями">
-          <Button
-            view={isLeftCollapsed ? 'action' : 'outlined'}
+
+        <div className="app-shell__header-actions">
+          <span className="app-shell__period" aria-live="polite">
+            {periodClock}
+          </span>
+          <HockeyButton
+            view="outlined"
             size="s"
-            onClick={() => setIsLeftCollapsed((prev) => !prev)}
-            aria-label={isLeftCollapsed ? 'Показать левую панель' : 'Свернуть левую панель'}
+            onClick={toggleTheme}
+            aria-label="Переключить тему"
           >
-            {isLeftCollapsed ? 'Показать меню' : 'Свернуть меню'}
-          </Button>
-          <Button
-            view={isRightCollapsed ? 'action' : 'outlined'}
-            size="s"
-            onClick={() => setIsRightCollapsed((prev) => !prev)}
-            aria-label={isRightCollapsed ? 'Показать правую панель' : 'Свернуть правую панель'}
-          >
-            {isRightCollapsed ? 'Показать борт' : 'Свернуть борт'}
-          </Button>
-          {isMessengerRoute && (
-            <Button
-              view="outlined"
+            {themeId === 'locker' ? '🧊 Лёд' : '🏒 Раздевалка'}
+          </HockeyButton>
+          <div className="app-shell__panel-controls" aria-label="Управление панелями">
+            <HockeyButton
+              view={isLeftCollapsed ? 'action' : 'outlined'}
               size="s"
-              onClick={() => {
-                if (isFocusMode) {
-                  setIsLeftCollapsed(false)
-                  setIsRightCollapsed(false)
-                  return
-                }
-                setIsLeftCollapsed(true)
-                setIsRightCollapsed(true)
-              }}
-              aria-label={isFocusMode ? 'Выйти из фокус-режима' : 'Включить фокус-режим'}
+              onClick={() => setIsLeftCollapsed((prev) => !prev)}
+              aria-label={isLeftCollapsed ? 'Показать левую панель' : 'Свернуть левую панель'}
             >
-              {isFocusMode ? 'Обычный режим' : 'Фокус на чат'}
-            </Button>
-          )}
+              {isLeftCollapsed ? 'Показать меню' : 'Свернуть меню'}
+            </HockeyButton>
+            <HockeyButton
+              view={isRightCollapsed ? 'action' : 'outlined'}
+              size="s"
+              onClick={() => setIsRightCollapsed((prev) => !prev)}
+              aria-label={isRightCollapsed ? 'Показать правую панель' : 'Свернуть правую панель'}
+            >
+              {isRightCollapsed ? 'Показать борт' : 'Свернуть борт'}
+            </HockeyButton>
+            {isMessengerRoute && (
+              <HockeyButton
+                view="outlined"
+                size="s"
+                onClick={() => {
+                  if (isFocusMode) {
+                    setIsLeftCollapsed(false)
+                    setIsRightCollapsed(false)
+                    return
+                  }
+                  setIsLeftCollapsed(true)
+                  setIsRightCollapsed(true)
+                }}
+                aria-label={isFocusMode ? 'Выйти из фокус-режима' : 'Включить фокус-режим'}
+              >
+                {isFocusMode ? 'Обычный режим' : 'Фокус на чат'}
+              </HockeyButton>
+            )}
+          </div>
         </div>
       </header>
 
@@ -147,9 +175,7 @@ export function AppShell() {
                   aria-current={active ? 'page' : undefined}
                 >
                   {item.label}
-                  {badge !== null && (
-                    <span className="hockey-nav__badge">({badge})</span>
-                  )}
+                  {badge !== null && <span className="hockey-nav__badge">{badge}</span>}
                 </Link>
               )
             })}

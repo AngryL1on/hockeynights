@@ -1,0 +1,53 @@
+/**
+ * Shared SCSS mixins for Hockey Nights UI.
+ */
+
+@mixin rink-line-gradient($opacity: 0.7) {
+  background: linear-gradient(
+    90deg,
+    var(--hockey-line-red) 0%,
+    var(--hockey-line-blue) 50%,
+    var(--hockey-line-red) 100%
+  );
+  opacity: $opacity;
+}
+
+@mixin glass-panel($blur: 12px) {
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}
+
+@mixin scoreboard-caps($size: 11px, $spacing: 0.12em) {
+  font-family: var(--hockey-font-scoreboard);
+  font-size: $size;
+  letter-spacing: $spacing;
+  text-transform: uppercase;
+}
+
+@mixin theme-ice {
+  [data-hockey-theme='ice'] & {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin breakpoint($min: null, $max: null) {
+  @if $min and $max {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}

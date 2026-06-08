@@ -1,0 +1,107 @@
+/**
+ * SPEC-UI-4.1, SPEC-UI-4.2, SPEC-FR-1.2.2
+ * Hockey Social design tokens поверх Gravity UI.
+ */
+
+$line-red: #e10600;
+$line-blue: #0033a0;
+$ice-deep: #071525;
+$ice-mid: #143352;
+$ice-glow: #5ec8f2;
+$locker-warm: #f0ebe3;
+$locker-concrete: #c8c2b8;
+$board-gold: #ffc72c;
+$rink-mist: #a8c4d9;
+$slot-green: #34d399;
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --hockey-ice-deep: #{$ice-deep};
+  --hockey-ice-mid: #{$ice-mid};
+  --hockey-ice-glow: #{$ice-glow};
+  --hockey-ice-surface: #0c2238;
+  --hockey-line-red: #{$line-red};
+  --hockey-line-blue: #{$line-blue};
+  --hockey-locker-warm: #{$locker-warm};
+  --hockey-locker-concrete: #{$locker-concrete};
+  --hockey-board-gold: #{$board-gold};
+  --hockey-rink-mist: #{$rink-mist};
+  --hockey-slot-green: #{$slot-green};
+  --hockey-puck-shadow: 0 8px 32px rgba(7, 21, 37, 0.28);
+  --hockey-card-shadow: 0 4px 24px rgba(7, 21, 37, 0.12);
+  --hockey-ice-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --hockey-glass-bg: rgba(255, 255, 255, 0.06);
+  --hockey-glass-border: rgba(255, 255, 255, 0.1);
+  --hockey-motion-fast: 200ms;
+  --hockey-motion-normal: 320ms;
+  --hockey-motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --hockey-font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --hockey-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --hockey-font-scoreboard: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+  --hockey-rink-lines: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(50% - 1px),
+    rgba(225, 6, 0, 0.35) calc(50% - 1px),
+    rgba(225, 6, 0, 0.35) calc(50% + 1px),
+    transparent calc(50% + 1px),
+    transparent 100%
+  );
+}
+
+/* SPEC-UI-4.2 Locker Room (light) */
+[data-hockey-theme='locker'] {
+  --hockey-surface: var(--hockey-locker-warm);
+  --hockey-card-bg: rgba(255, 255, 255, 0.92);
+  --hockey-card-border: var(--hockey-locker-concrete);
+  --hockey-accent: var(--hockey-line-red);
+  --hockey-text-muted: #6b6560;
+  --hockey-header-bg: linear-gradient(180deg, #ffffff 0%, #f5f0e8 100%);
+  --hockey-header-border: var(--hockey-line-red);
+  --hockey-nav-active-bg: rgba(225, 6, 0, 0.1);
+  --hockey-spotlight: radial-gradient(
+    ellipse 120% 80% at 50% -20%,
+    rgba(255, 199, 44, 0.14) 0%,
+    transparent 55%
+  );
+  --hockey-body-texture: linear-gradient(
+    135deg,
+    rgba(225, 6, 0, 0.03) 0%,
+    transparent 40%,
+    rgba(0, 51, 160, 0.03) 100%
+  );
+}
+
+/* SPEC-UI-4.1 Ice & Energy (dark) */
+[data-hockey-theme='ice'] {
+  --hockey-surface: var(--hockey-ice-deep);
+  --hockey-card-bg: rgba(18, 42, 69, 0.85);
+  --hockey-card-border: rgba(94, 200, 242, 0.18);
+  --hockey-accent: var(--hockey-ice-glow);
+  --hockey-text-muted: var(--hockey-rink-mist);
+  --hockey-header-bg: linear-gradient(180deg, #0f2844 0%, var(--hockey-ice-deep) 100%);
+  --hockey-header-border: var(--hockey-ice-glow);
+  --hockey-nav-active-bg: rgba(94, 200, 242, 0.12);
+  --hockey-spotlight: radial-gradient(
+    ellipse 100% 60% at 50% 0%,
+    rgba(94, 200, 242, 0.15) 0%,
+    transparent 60%
+  );
+  --hockey-body-texture: var(--hockey-rink-lines);
+  --hockey-glass-bg: rgba(255, 255, 255, 0.04);
+  --hockey-glass-border: rgba(94, 200, 242, 0.12);
+  --hockey-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  font-family: var(--hockey-font-sans);
+  background-color: var(--hockey-surface);
+  background-image: var(--hockey-spotlight), var(--hockey-body-texture);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 480px, 100% 100%;
+  background-attachment: fixed, fixed;
+  transition:
+    background-color var(--hockey-motion-normal) var(--hockey-motion-ease),
+    color var(--hockey-motion-fast) var(--hockey-motion-ease);
+}

@@ -1,0 +1,306 @@
+@use '../mixins' as *;
+
+/* SPEC-UI-8.1, SPEC-UI-8.2, SPEC-UI-8.3, SPEC-UI-8.4 Messenger */
+.messenger-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 0;
+  height: calc(100vh - 120px);
+  min-height: 480px;
+  border: 1px solid var(--hockey-card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--hockey-card-bg);
+  box-shadow: 0 14px 36px rgba(3, 15, 33, 0.22);
+}
+
+.app-shell__body--left-collapsed.app-shell__body--right-collapsed {
+  .messenger-layout {
+    height: calc(100vh - 64px);
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .messenger-sidebar {
+    background: transparent;
+    border-right-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .messenger-title,
+  .messenger-header,
+  .messenger-input {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .messenger-messages {
+    background: transparent;
+  }
+}
+
+.messenger-sidebar {
+  border-right: 1px solid var(--hockey-card-border);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+.messenger-title,
+.messenger-header {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--hockey-card-border);
+  flex-shrink: 0;
+}
+
+.messenger-title {
+  letter-spacing: 0.01em;
+}
+
+.messenger-header {
+  background: rgba(255, 255, 255, 0.01);
+  @include glass-panel(8px);
+}
+
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 10px;
+  overflow-y: auto;
+}
+
+.chat-item {
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.18s ease;
+
+  &:hover {
+    background: rgba(93, 172, 255, 0.08);
+    border-color: rgba(93, 172, 255, 0.2);
+    transform: translateY(-1px);
+  }
+
+  &--selected {
+    background: rgba(83, 159, 255, 0.15);
+    border-color: rgba(83, 159, 255, 0.42);
+  }
+
+  &__avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #58a9ff, #3a6ef2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__title {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__last-msg {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__unread {
+    background: #4a8eff;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    min-width: 22px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(74, 142, 255, 0.45);
+  }
+}
+
+.messenger-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messenger-messages {
+  flex: 1;
+  padding: 18px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(66, 143, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 90% 85%, rgba(0, 192, 255, 0.06), transparent 30%),
+    linear-gradient(180deg, rgba(8, 34, 63, 0.14) 0%, rgba(8, 34, 63, 0.03) 100%),
+    var(--hockey-card-bg);
+}
+
+.messenger-input {
+  padding: 12px 16px;
+  border-top: 1px solid var(--hockey-card-border);
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.messenger-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-bubble-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: min(78%, 620px);
+  margin-bottom: 4px;
+
+  &--own {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+}
+
+.chat-bubble-sender {
+  margin-bottom: 3px;
+  margin-left: 10px;
+  opacity: 0.72;
+}
+
+.chat-bubble {
+  padding: 9px 12px 7px;
+  border-radius: 14px 14px 14px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  @include glass-panel(6px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  line-height: 1.35;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    bottom: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 0 0 0 3px;
+    transform: rotate(45deg);
+    background: inherit;
+    border-left: inherit;
+    border-bottom: inherit;
+  }
+
+  &--own {
+    background: linear-gradient(135deg, #4a8eff, #2f78ff);
+    border-radius: 14px 14px 4px 14px;
+    border-color: rgba(116, 174, 255, 0.45);
+    color: #fff;
+
+    &::after {
+      left: auto;
+      right: -6px;
+      border-left: none;
+      border-bottom: none;
+      border-right: inherit;
+      border-top: inherit;
+    }
+
+    .chat-bubble-time {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+}
+
+.chat-bubble-meta {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.chat-bubble-time {
+  font-size: 10px;
+  opacity: 0.72;
+  text-align: right;
+}
+
+.chat-bubble-status {
+  font-size: 10px;
+  letter-spacing: -1px;
+  color: #d9f0ff;
+}
+
+.actionable-card {
+  min-width: 260px;
+  margin: 2px 0;
+  background: rgba(255, 255, 255, 0.04);
+
+  &__header {
+    margin-bottom: 8px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+}
+
+@include breakpoint($max: 768px) {
+  .messenger-layout {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 160px);
+  }
+
+  .messenger-sidebar {
+    display: none;
+  }
+
+  .chat-bubble-container {
+    max-width: 90%;
+  }
+}
