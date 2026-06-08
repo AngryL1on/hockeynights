@@ -138,8 +138,8 @@ export function LeagueStandings({standings, leagueName, compact = false}: League
             <div className="standings-board__bar-cell" role="cell">
               <div className="standings-board__points-bar" aria-hidden>
                 <div
-                  className="standings-board__points-fill"
-                  style={{width: `${fillPercent}%`}}
+                  className="standings-board__points-fill hockey-fill"
+                  style={{['--hockey-fill-width' as string]: `${fillPercent}%`}}
                 />
               </div>
             </div>

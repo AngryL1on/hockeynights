@@ -29,18 +29,10 @@ export function SourceStatusTable({items}: SourceStatusTableProps) {
   }
 
   return (
-    <Card view="outlined" style={{padding: 16}}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <Card view="outlined" className="hockey-panel">
+      <div className="hockey-stack hockey-stack--gap-12">
         {items.map((item) => (
-          <div
-            key={`${item.entityType}-${item.entityId}`}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '100px 1fr auto auto',
-              gap: 12,
-              alignItems: 'center',
-            }}
-          >
+          <div key={`${item.entityType}-${item.entityId}`} className="admin-source-table__row">
             <Text color="secondary">{TYPE_LABELS[item.entityType]}</Text>
             <Text>{item.entityName}</Text>
             <SourceMetaBadge sourceMeta={item.sourceMeta} />

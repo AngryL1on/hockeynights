@@ -50,15 +50,15 @@ export function RosterNeedsWidget({eventId}: RosterNeedsWidgetProps) {
 
       <div className="stick-progress__bar" role="progressbar" aria-valuenow={fillPercent} aria-valuemin={0} aria-valuemax={100}>
         <div
-          className={`stick-progress__fill ${stickFillClass(fillPercent)}`}
-          style={{width: `${fillPercent}%`}}
+          className={`stick-progress__fill hockey-fill ${stickFillClass(fillPercent)}`}
+          style={{['--hockey-fill-width' as string]: `${fillPercent}%`}}
         />
       </div>
 
       {status.deficits.length === 0 ? (
         <Text color="positive">Состав укомплектован</Text>
       ) : (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+        <div className="hockey-stack hockey-stack--gap-6">
           {status.deficits.map((slot) => (
             <div key={slot.position} className="roster-hook-slot roster-hook-slot--deficit">
               <span className="roster-hook-slot__hook" aria-hidden>

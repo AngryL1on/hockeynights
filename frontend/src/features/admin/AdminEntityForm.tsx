@@ -42,8 +42,8 @@ export function AdminEntityForm() {
   }
 
   return (
-    <Card view="filled" style={{padding: 16, maxWidth: 480}}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <Card view="filled" className="hockey-panel hockey-form-shell hockey-form-shell--480">
+      <div className="hockey-stack hockey-stack--gap-12">
         <Text variant="subheader-2">Добавить запись</Text>
         <Select
           label="Тип"

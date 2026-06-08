@@ -33,7 +33,7 @@ export function MockShopPortalModal({open, onClose, shop}: MockShopPortalModalPr
         </Button>
       }
     >
-      <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+      <div className="hockey-stack hockey-stack--gap-8">
         <Text>{shop.city ?? 'Москва'}</Text>
         <Text color="secondary">Категории: {shop.categories.join(', ') || 'не указаны'}</Text>
         <Text color="secondary">Статус: {shop.partnerStatus}</Text>

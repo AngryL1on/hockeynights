@@ -46,8 +46,8 @@ export function MockLoginPage() {
   }
 
   return (
-    <Card view="filled" style={{maxWidth: 480, margin: '0 auto'}}>
-      <div style={{padding: 24, display: 'flex', flexDirection: 'column', gap: 16}}>
+    <Card view="filled" className="hockey-form-shell hockey-form-shell--480">
+      <div className="hockey-panel hockey-panel--24 hockey-stack hockey-stack--gap-16">
         <Text variant="header-1">Hockey ID — вход</Text>
         <Text color="secondary">
           Mock-сессия Phase 1. Выберите роли и начните работу с профилем.
@@ -62,7 +62,7 @@ export function MockLoginPage() {
 
         <div>
           <Text variant="subheader-2">Роли</Text>
-          <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8}}>
+          <div className="hockey-mt-8 hockey-stack hockey-stack--gap-8">
             {ROLE_OPTIONS.map((option) => (
               <Checkbox
                 key={option.value}

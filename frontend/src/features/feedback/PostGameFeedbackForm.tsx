@@ -93,8 +93,8 @@ export function PostGameFeedbackForm() {
   }
 
   return (
-    <Card view="outlined" style={{padding: 16, maxWidth: 560}}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <Card view="outlined" className="hockey-panel hockey-form-shell hockey-form-shell--560">
+      <div className="hockey-stack hockey-stack--gap-12">
         <Text variant="subheader-2">Post-game feedback</Text>
 
         <Select

@@ -68,7 +68,7 @@ export function SosRequestForm() {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <div className="hockey-stack hockey-stack--gap-12">
       <Text variant="subheader-2">Запустить добор / Goalkeeper SOS</Text>
       <Select
         label="Событие"

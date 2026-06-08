@@ -32,13 +32,9 @@ export function LeagueCard({league, onSelect, selected = false}: LeagueCardProps
     <>
       <IceCard
         padding="m"
-        style={
-          selected
-            ? {outline: '2px solid var(--hockey-board-gold)', outlineOffset: 2}
-            : undefined
-        }
+        className={selected ? 'ice-card--selected' : undefined}
       >
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+        <div className="hockey-stack hockey-stack--gap-8">
           <Text variant="subheader-2">{league.name}</Text>
           <Text color="secondary">{league.region}</Text>
           {league.level && <Label size="s">{league.level}</Label>}

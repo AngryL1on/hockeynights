@@ -13,16 +13,16 @@ import {IceCard} from '@/shared/ui/IceCard'
  */
 export function SosPage() {
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+    <div className="hockey-stack hockey-stack--gap-20">
       <Text variant="header-1">Goalkeeper SOS</Text>
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20}}>
+      <div className="hockey-grid hockey-grid--cards-280">
         <IceCard padding="m">
           <SosRequestForm />
         </IceCard>
         <IceCard padding="m">
           <Text variant="subheader-2">Открытые запросы</Text>
-          <div style={{marginTop: 12}}>
+          <div className="hockey-mt-12">
             <SosFeed />
           </div>
         </IceCard>

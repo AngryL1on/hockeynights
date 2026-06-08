@@ -38,14 +38,14 @@ export function SosResponseReview({requestId}: SosResponseReviewProps) {
   if (responses.length === 0) return <Text color="secondary">Откликов пока нет.</Text>
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+    <div className="hockey-stack hockey-stack--gap-8">
       {responses.map((response) => (
-        <Card key={response.id} view="outlined" style={{padding: 12}}>
+        <Card key={response.id} view="outlined" className="hockey-panel hockey-panel--12">
           <Text variant="subheader-2">{response.displayName ?? response.userId}</Text>
           {response.message && <Text color="secondary">{response.message}</Text>}
           <Text color="secondary">Статус: {response.status}</Text>
           {response.status === 'pending' && (
-            <div style={{display: 'flex', gap: 8, marginTop: 8}}>
+            <div className="hockey-row hockey-row--gap-8 hockey-mt-8">
               <Button
                 view="action"
                 size="s"

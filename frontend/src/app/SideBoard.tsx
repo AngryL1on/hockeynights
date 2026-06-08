@@ -44,7 +44,7 @@ export function SideBoard() {
   return (
     <aside className="side-board" aria-label="Борт арены">
       <IceCard padding="s">
-        <div style={{textAlign: 'center', padding: '18px 0'}}>
+        <div className="side-board__hero">
           <ScoreboardText tone="accent">HOCKEY SOCIAL</ScoreboardText>
           <Text color="secondary">Панель событий и подсказок</Text>
         </div>
@@ -62,7 +62,7 @@ export function SideBoard() {
             </div>
           ))
         )}
-        <div style={{marginTop: 10}}>
+        <div className="side-board__cta">
           <Link to="/radar">
             <HockeyButton view="outlined" size="s">
               Открыть радар
@@ -77,7 +77,7 @@ export function SideBoard() {
           Открытых запросов:{' '}
           <ScoreboardText tone="accent">{openSos}</ScoreboardText>
         </Text>
-        <div style={{marginTop: 10}}>
+        <div className="side-board__cta">
           <Link to="/sos">
             <HockeyButton variant="sos" size="m">
               SOS
@@ -94,7 +94,7 @@ export function SideBoard() {
             leagueName={featuredLeague.name}
             compact
           />
-          <div style={{marginTop: 8}}>
+          <div className="side-board__cta side-board__cta--sm">
             <Link to="/leagues">
               <HockeyButton view="outlined" size="s">
                 Все лиги
@@ -122,7 +122,7 @@ export function SideBoard() {
             </div>
           ))
         )}
-        <div style={{marginTop: 8}}>
+        <div className="side-board__cta side-board__cta--sm">
           <Link to="/arenas">
             <HockeyButton view="outlined" size="s">
               Катки

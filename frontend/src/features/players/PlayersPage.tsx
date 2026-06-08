@@ -26,14 +26,14 @@ export function PlayersPage() {
   })
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Text variant="header-1" className="variable-font-header">Игроки</Text>
       <PlayerFilters filters={filters} onChange={setFilters} />
 
       {isLoading && (
         <>
           <ScoreboardLoader />
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12}}>
+          <div className="hockey-grid hockey-grid--cards-260">
             <IceSkeleton count={3} height={180} />
           </div>
         </>

@@ -159,7 +159,7 @@ export function AppShell() {
           <div className="hockey-nav" ref={navRef}>
             <span
               className="hockey-nav__puck hockey-nav-puck"
-              style={{top: puckTop}}
+              style={{['--hockey-puck-top' as string]: `${puckTop}px`}}
               aria-hidden
             />
             {NAV_ITEMS.map((item) => {

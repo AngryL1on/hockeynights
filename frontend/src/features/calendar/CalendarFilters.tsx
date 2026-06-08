@@ -33,7 +33,7 @@ const STATUS_OPTIONS = [
  */
 export function CalendarFilters({filters, onChange}: CalendarFiltersProps) {
   return (
-    <div style={{display: 'flex', gap: 12, flexWrap: 'wrap'}}>
+    <div className="hockey-row hockey-row--gap-12">
       <Select
         label="Тип события"
         value={[filters.type ?? '']}

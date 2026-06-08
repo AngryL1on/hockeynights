@@ -19,7 +19,7 @@ export function AdminDashboard() {
   })
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Text variant="header-1">Админка справочников</Text>
       <Text color="secondary">
         Prototype для ручного управления аренами, лигами и магазинами.

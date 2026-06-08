@@ -68,7 +68,7 @@ export function MockShopCheckoutModal({open, onClose, offer, shopName}: MockShop
       }
     >
       {result ? (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+        <div className="hockey-stack hockey-stack--gap-8">
           <Text variant="subheader-2">Переход подготовлен (mock)</Text>
           <Text>
             {result.offerTitle} — {result.price.toLocaleString('ru-RU')} {result.currency}
@@ -78,7 +78,7 @@ export function MockShopCheckoutModal({open, onClose, offer, shopName}: MockShop
           </Text>
         </div>
       ) : (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+        <div className="hockey-stack hockey-stack--gap-8">
           <Text variant="subheader-2">{offer.title}</Text>
           <Text>
             {offer.price.toLocaleString('ru-RU')} {offer.currency} · {offer.availability}

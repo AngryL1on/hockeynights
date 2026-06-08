@@ -26,10 +26,10 @@ export function IceSlotsList({slots, arena}: IceSlotsListProps) {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+    <div className="hockey-stack hockey-stack--gap-8">
       {slots.map((slot) => (
-        <Card key={slot.id} view="filled" style={{padding: 12}}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+        <Card key={slot.id} view="filled" className="hockey-panel hockey-panel--12">
+          <div className="hockey-stack hockey-stack--gap-6">
             <Text>
               {new Date(slot.startsAt).toLocaleString('ru-RU')} —{' '}
               {new Date(slot.endsAt).toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})}

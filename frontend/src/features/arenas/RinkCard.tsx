@@ -41,8 +41,8 @@ export function RinkCard({
 
   return (
     <IceCard padding="m" className={selected ? 'rink-card--selected' : undefined}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8}}>
+      <div className="hockey-stack hockey-stack--gap-10">
+        <div className="hockey-row hockey-row--gap-8 hockey-row--between">
           <Text variant="subheader-2">{arena.name}</Text>
           <span className={`rink-card__mode rink-card__mode--${arena.bookingMode}`}>
             {BOOKING_MODE_LABELS[arena.bookingMode]}
@@ -70,7 +70,7 @@ export function RinkCard({
         <Text color="secondary">Удобства: {arena.amenities.join(', ')}</Text>
         <SourceMetaBadge sourceMeta={arena.sourceMeta} />
 
-        <div style={{display: 'flex', gap: 8, flexWrap: 'wrap'}}>
+        <div className="hockey-row hockey-row--gap-8">
           {arena.bookingMode === 'external_portal' && (
             <ExternalBookingButton arena={arena} size="s" />
           )}

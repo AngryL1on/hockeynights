@@ -79,7 +79,7 @@ export function MockIceBookingModal({open, onClose, arena, slot}: MockIceBooking
       }
     >
       {result ? (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+        <div className="hockey-stack hockey-stack--gap-8">
           <Text variant="subheader-2">Заявка принята (mock)</Text>
           <Text>Код подтверждения: {result.confirmationCode}</Text>
           {result.slotLabel && <Text color="secondary">Слот: {result.slotLabel}</Text>}
@@ -88,7 +88,7 @@ export function MockIceBookingModal({open, onClose, arena, slot}: MockIceBooking
           </Text>
         </div>
       ) : (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+        <div className="hockey-stack hockey-stack--gap-12">
           <Text color="secondary">{arena.address}</Text>
           {slot ? (
             <Text>

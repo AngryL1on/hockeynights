@@ -33,7 +33,7 @@ const SKILL_OPTIONS = [
  */
 export function PlayerFilters({filters, onChange}: PlayerFiltersProps) {
   return (
-    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12}}>
+    <div className="hockey-grid hockey-grid--filters">
       <Select
         label="Амплуа"
         value={[filters.position ?? '']}

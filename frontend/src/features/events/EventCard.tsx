@@ -51,8 +51,8 @@ export function EventCard({event, currentUserId = 'user-001', compact = false}: 
 
   return (
     <IceCard padding="m">
-      <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
-        <div className="match-center__row" style={{border: 'none', padding: 0, background: 'transparent'}}>
+      <div className="hockey-stack hockey-stack--gap-12">
+        <div className="match-center__row match-center__row--plain">
           <div>
             <div className="match-center__time">{timeStr}</div>
             <div className={`match-center__type match-center__type--${event.type}`}>

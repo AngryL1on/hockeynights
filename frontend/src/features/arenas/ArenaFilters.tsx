@@ -32,7 +32,7 @@ const AMENITY_OPTIONS = [
  */
 export function ArenaFilters({filters, onChange}: ArenaFiltersProps) {
   return (
-    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12}}>
+    <div className="hockey-grid hockey-grid--filters">
       <TextInput
         label="Район"
         value={filters.district ?? ''}

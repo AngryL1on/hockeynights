@@ -38,7 +38,7 @@ export function PlayerCard({player}: PlayerCardProps) {
         <div className="hockey-player-card__header">
           <div>
             <PositionLabel position={player.position} />
-            <Text variant="subheader-2" style={{marginTop: 6}}>
+            <Text variant="subheader-2" className="hockey-text-mt-6">
               {player.displayName}
             </Text>
           </div>
@@ -52,13 +52,13 @@ export function PlayerCard({player}: PlayerCardProps) {
         {player.metro && <Text color="secondary">м. {player.metro}</Text>}
 
         <div>
-          <Text color="secondary" style={{fontSize: 11}}>
+          <Text color="secondary" className="hockey-text-caption">
             Надёжность
           </Text>
           <div className="hockey-player-card__reliability" aria-hidden>
             <div
-              className="hockey-player-card__reliability-fill"
-              style={{width: `${reliability}%`}}
+              className="hockey-player-card__reliability-fill hockey-fill"
+              style={{['--hockey-fill-width' as string]: `${reliability}%`}}
             />
           </div>
         </div>

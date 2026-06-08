@@ -47,7 +47,7 @@ export function LeaguesPage() {
   })
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+    <div className="hockey-stack hockey-stack--gap-20">
       <Text variant="header-1">Любительские лиги</Text>
       <Text color="secondary">
         Данные могут быть mock, manual, imported или external — смотрите бейдж источника.
@@ -55,7 +55,7 @@ export function LeaguesPage() {
 
       {isLoading && <ScoreboardLoader label="Загрузка лиг" />}
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12}}>
+      <div className="hockey-grid hockey-grid--cards-300">
         {leagues.map((league) => (
           <LeagueCard
             key={league.id}
@@ -68,7 +68,7 @@ export function LeaguesPage() {
 
       {selectedLeagueId && selectedLeague && (
         <IceCard padding="m">
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap', marginBottom: 16}}>
+          <div className="hockey-row hockey-row--gap-12 hockey-row--between hockey-mb-16">
             <div>
               <Text variant="subheader-2">{selectedLeague.name}</Text>
               <Text color="secondary">{selectedLeague.region}</Text>
@@ -76,7 +76,7 @@ export function LeaguesPage() {
             <SourceMetaBadge sourceMeta={selectedLeague.sourceMeta} />
           </div>
 
-          <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+          <div className="hockey-stack hockey-stack--gap-20">
             {standingsLoading ? (
               <ScoreboardLoader label="Загрузка таблицы" />
             ) : (

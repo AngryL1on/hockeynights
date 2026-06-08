@@ -30,7 +30,7 @@ export function AddTeamMember({teamId}: AddTeamMemberProps) {
   const options = players.map((p) => ({value: p.userId, content: p.displayName}))
 
   return (
-    <div style={{display: 'flex', gap: 8, alignItems: 'flex-end', flexWrap: 'wrap'}}>
+    <div className="hockey-row hockey-row--gap-8 hockey-row--end">
       <Select
         label="Добавить игрока"
         options={options}

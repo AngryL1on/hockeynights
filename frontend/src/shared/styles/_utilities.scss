@@ -1,0 +1,186 @@
+/**
+ * Layout utilities — replaces inline flex/grid styles across features.
+ */
+
+.hockey-stack {
+  display: flex;
+  flex-direction: column;
+
+  &--gap-4 {
+    gap: 4px;
+  }
+
+  &--gap-6 {
+    gap: 6px;
+  }
+
+  &--gap-8 {
+    gap: 8px;
+  }
+
+  &--gap-10 {
+    gap: 10px;
+  }
+
+  &--gap-12 {
+    gap: 12px;
+  }
+
+  &--gap-16 {
+    gap: 16px;
+  }
+
+  &--gap-20 {
+    gap: 20px;
+  }
+}
+
+.hockey-row {
+  display: flex;
+  flex-wrap: wrap;
+
+  &--gap-8 {
+    gap: 8px;
+  }
+
+  &--gap-12 {
+    gap: 12px;
+  }
+
+  &--between {
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &--between-center {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &--end {
+    align-items: flex-end;
+  }
+
+  &--center {
+    align-items: center;
+  }
+}
+
+.hockey-grid {
+  display: grid;
+  gap: 12px;
+
+  &--cards-260 {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  &--cards-280 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  &--cards-300 {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  &--filters {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  &--admin-source {
+    grid-template-columns: 100px 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+.hockey-mt-8 {
+  margin-top: 8px;
+}
+
+.hockey-mt-10 {
+  margin-top: 10px;
+}
+
+.hockey-mt-12 {
+  margin-top: 12px;
+}
+
+.hockey-mt-16 {
+  margin-top: 16px;
+}
+
+.hockey-mb-12 {
+  margin-bottom: 12px;
+}
+
+.hockey-mb-16 {
+  margin-bottom: 16px;
+}
+
+.hockey-panel {
+  padding: 16px;
+
+  &--12 {
+    padding: 12px;
+  }
+
+  &--24 {
+    padding: 24px;
+  }
+}
+
+.hockey-form-shell {
+  max-width: 640px;
+
+  &--560 {
+    max-width: 560px;
+  }
+
+  &--480 {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+.hockey-clickable {
+  cursor: pointer;
+}
+
+.hockey-fill {
+  width: var(--hockey-fill-width, 0%);
+}
+
+.hockey-nav__puck {
+  top: var(--hockey-puck-top, 0);
+}
+
+.ice-skeleton {
+  height: var(--ice-skeleton-height, 120px);
+}
+
+.hockey-text-mt-6 {
+  margin-top: 6px;
+}
+
+.hockey-text-caption {
+  font-size: 11px;
+}
+
+.hockey-text-mt-8 {
+  margin-top: 8px;
+}
+
+.hockey-min-w-200 {
+  min-width: 200px;
+}
+
+.match-center__row--plain {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.roster-hook-slot__body {
+  flex: 1;
+}

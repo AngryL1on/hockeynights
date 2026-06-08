@@ -28,12 +28,12 @@ export function ShopsPage() {
   })
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Text variant="header-1">Магазины экипировки</Text>
 
       {isLoading && <Text>Загрузка магазинов...</Text>}
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12}}>
+      <div className="hockey-grid hockey-grid--cards-300">
         {shops.map((shop) => (
           <div key={shop.id} onClick={() => setSelectedShopId(shop.id)}>
             <ShopCard shop={shop} onSelect={setSelectedShopId} />
@@ -44,7 +44,7 @@ export function ShopsPage() {
       {selectedShopId && (
         <div>
           <Text variant="subheader-2">Товарные предложения</Text>
-          <div style={{marginTop: 12}}>
+          <div className="hockey-mt-12">
             <ProductOffersList
               offers={offers}
               shopName={shops.find((s) => s.id === selectedShopId)?.name ?? 'Магазин'}

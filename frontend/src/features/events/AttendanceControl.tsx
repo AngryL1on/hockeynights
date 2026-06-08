@@ -37,7 +37,7 @@ export function AttendanceControl({eventId, currentStatus}: AttendanceControlPro
   ]
 
   return (
-    <div style={{display: 'flex', gap: 8, flexWrap: 'wrap'}}>
+    <div className="hockey-row hockey-row--gap-8">
       {buttons.map((btn) => (
         <Button
           key={btn.status}

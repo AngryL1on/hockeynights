@@ -68,11 +68,41 @@
 
 }
 
+.team-picker-item {
+  cursor: pointer;
+
+  &__surface {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--hockey-card-border);
+  }
+}
+
+.puck-3d {
+  width: 100%;
+  height: 200px;
+  cursor: pointer;
+
+  &--fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.admin-source-table {
+  &__row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
 .stick-progress {
   display: flex;
-      flex-direction: column;
-      gap: 6px;
-
+  flex-direction: column;
+  gap: 6px;
 }
 
 .stick-progress__bar {
@@ -86,9 +116,9 @@
 
 .stick-progress__fill {
   height: 100%;
-      border-radius: 4px;
-      transition: width var(--hockey-motion-fast) var(--hockey-motion-ease);
-
+  width: var(--hockey-fill-width, 0%);
+  border-radius: 4px;
+  transition: width var(--hockey-motion-fast) var(--hockey-motion-ease);
 }
 
 .stick-progress__fill--ok {

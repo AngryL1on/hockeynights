@@ -30,11 +30,11 @@ export function ProductOffersList({offers, shopName}: ProductOffersListProps) {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <div className="hockey-stack hockey-stack--gap-12">
       {offers.map((offer) => (
-        <Card key={offer.id} view="filled" style={{padding: 16}}>
-          <div style={{display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap'}}>
-            <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
+        <Card key={offer.id} view="filled" className="hockey-panel">
+          <div className="hockey-row hockey-row--gap-12 hockey-row--between">
+            <div className="hockey-stack hockey-stack--gap-4">
               <Text variant="subheader-2">{offer.title}</Text>
               <Text color="secondary">{offer.category}</Text>
               <Text>

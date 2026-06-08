@@ -26,10 +26,10 @@ export function TeamsPage() {
   const activeTeam = teams.find((t) => t.id === activeTeamId)
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+    <div className="hockey-stack hockey-stack--gap-20">
       <Text variant="header-1">Команды</Text>
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20}}>
+      <div className="hockey-grid hockey-grid--cards-280">
         <IceCard padding="m">
           <TeamCreateForm />
         </IceCard>
@@ -37,26 +37,20 @@ export function TeamsPage() {
         <IceCard padding="m">
           <Text variant="subheader-2">Мои команды</Text>
           {isLoading && <ScoreboardLoader />}
-          <div style={{marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8}}>
+          <div className="hockey-mt-12 hockey-stack hockey-stack--gap-8">
             {teams.map((team) => (
               <div
                 key={team.id}
+                className="team-picker-item"
                 onClick={() => setSelectedTeamId(team.id)}
-                style={{cursor: 'pointer'}}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === 'Enter' && setSelectedTeamId(team.id)}
               >
                 <div
-                  className={activeTeamId === team.id ? 'locker-room' : ''}
-                  style={{
-                    padding: activeTeamId === team.id ? undefined : 12,
-                    borderRadius: 8,
-                    border:
-                      activeTeamId === team.id
-                        ? undefined
-                        : '1px solid var(--hockey-card-border)',
-                  }}
+                  className={
+                    activeTeamId === team.id ? 'locker-room' : 'team-picker-item__surface'
+                  }
                 >
                   <TeamCrest name={team.name} city={team.city} skillLevel={team.skillLevel} />
                 </div>
@@ -73,7 +67,7 @@ export function TeamsPage() {
             city={activeTeam.city}
             skillLevel={activeTeam.skillLevel}
           />
-          <div style={{marginTop: 16, marginBottom: 12}}>
+          <div className="hockey-mt-16 hockey-mb-12">
             <AddTeamMember teamId={activeTeamId} />
           </div>
           <TeamRoster teamId={activeTeamId} />

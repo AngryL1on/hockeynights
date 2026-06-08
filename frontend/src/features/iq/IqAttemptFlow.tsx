@@ -67,7 +67,7 @@ export function IqAttemptFlow({
     return (
       <IceCard padding="m">
         <Text color="secondary">Вопросы пока недоступны.</Text>
-        <div style={{marginTop: 8}}>
+        <div className="hockey-mt-8">
           <HockeyButton view="outlined" onClick={onExit}>
             Назад к каталогу
           </HockeyButton>
@@ -87,7 +87,7 @@ export function IqAttemptFlow({
         <Text color="secondary">
           Серия: <ScoreboardText>{result.streak}</ScoreboardText>
         </Text>
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8}}>
+        <div className="hockey-mt-8 hockey-stack hockey-stack--gap-8">
           {result.details.map((detail, index) => (
             <div key={detail.questionId} className="iq-result-row">
               <Text>
@@ -97,7 +97,7 @@ export function IqAttemptFlow({
             </div>
           ))}
         </div>
-        <div style={{display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap'}}>
+        <div className="hockey-row hockey-row--gap-8 hockey-mt-12">
           <HockeyButton onClick={onExit}>К каталогу</HockeyButton>
         </div>
       </IceCard>
@@ -116,7 +116,7 @@ export function IqAttemptFlow({
       <Text color="secondary">
         Отвечено: <ScoreboardText>{answeredCount}</ScoreboardText>
       </Text>
-      <Text style={{marginTop: 8}}>{currentQuestion.prompt}</Text>
+      <Text className="hockey-text-mt-8">{currentQuestion.prompt}</Text>
 
       <div className="iq-board__options">
         {currentQuestion.options.map((option) => {

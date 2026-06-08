@@ -33,12 +33,12 @@ export function EventsPage() {
   }))
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+    <div className="hockey-stack hockey-stack--gap-20">
       <ScrollReveal direction="down">
         <Text variant="header-1" className="variable-font-header">Игры и тренировки</Text>
       </ScrollReveal>
 
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20}}>
+      <div className="hockey-grid hockey-grid--cards-280">
         <ScrollReveal direction="left">
           <IceCard padding="m">
             <EventCreateForm />
@@ -66,7 +66,7 @@ export function EventsPage() {
       </div>
 
       {!isLoading && events.length > 0 && (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+        <div className="hockey-stack hockey-stack--gap-12">
           <Text variant="subheader-2">Детали событий</Text>
           {events.map((event, index) => (
             <ScrollReveal key={event.id} direction={index % 2 === 0 ? 'up' : 'down'}>

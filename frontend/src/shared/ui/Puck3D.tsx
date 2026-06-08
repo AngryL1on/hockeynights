@@ -58,22 +58,14 @@ function isWebGLSupported() {
 export function Puck3D() {
   if (!isWebGLSupported()) {
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '200px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="puck-3d puck-3d--fallback">
         <Text color="secondary">3D-preview недоступен в этой среде</Text>
       </div>
     )
   }
 
   return (
-    <div style={{width: '100%', height: '200px', cursor: 'pointer'}}>
+    <div className="puck-3d">
       <Canvas shadows>
         <PerspectiveCamera makeDefault position={[0, 0, 5]} />
         <ambientLight intensity={0.5} />

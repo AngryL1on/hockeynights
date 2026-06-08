@@ -73,7 +73,7 @@ export function EventCreateForm() {
   const teamOptions = teams.map((t) => ({value: t.id, content: t.name}))
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <div className="hockey-stack hockey-stack--gap-12">
       <Text variant="subheader-2">Создать событие</Text>
       <TextInput label="Название" value={title} onUpdate={setTitle} />
       <Select label="Тип" value={[type]} onUpdate={(v) => setType(v[0] as EventType)} options={TYPE_OPTIONS} />

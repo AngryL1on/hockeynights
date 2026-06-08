@@ -20,7 +20,7 @@ export function IceSkeleton({height = 120, count = 1}: IceSkeletonProps) {
         <div
           key={i}
           className="ice-skeleton hockey-ice-shimmer"
-          style={{height}}
+          style={{['--ice-skeleton-height' as string]: typeof height === 'number' ? `${height}px` : height}}
           aria-hidden
         />
       ))}

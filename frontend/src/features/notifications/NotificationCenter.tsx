@@ -29,16 +29,16 @@ export function NotificationCenter({notifications}: NotificationCenterProps) {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <div className="hockey-stack hockey-stack--gap-12">
       {notifications.map((notification) => (
         <Card
           key={notification.id}
           view={notification.readAt ? 'outlined' : 'filled'}
-          style={{padding: 16}}
+          className="hockey-panel"
         >
-          <div style={{display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap'}}>
-            <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
-              <div style={{display: 'flex', gap: 8, alignItems: 'center'}}>
+          <div className="hockey-row hockey-row--gap-12 hockey-row--between">
+            <div className="hockey-stack hockey-stack--gap-4">
+              <div className="hockey-row hockey-row--gap-8 hockey-row--center">
                 <Label size="s">{TYPE_LABELS[notification.type]}</Label>
                 <Text variant="subheader-2">{notification.title}</Text>
               </div>

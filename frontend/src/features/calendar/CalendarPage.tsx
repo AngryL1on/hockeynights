@@ -42,7 +42,7 @@ export function CalendarPage() {
   }, [events])
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Text variant="header-1">Календарь</Text>
       <CalendarFilters filters={filters} onChange={setFilters} />
 

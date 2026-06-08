@@ -1,5 +1,7 @@
 @use './shared/theme/tokens';
+@use './shared/styles/vendor';
 @use './shared/styles/motion';
+@use './shared/styles/utilities';
 @use './shared/styles/hockey-ui';
 
 body {

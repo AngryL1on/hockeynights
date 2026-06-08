@@ -11,7 +11,7 @@ import {KarmaHint} from '@/features/karma/KarmaHint'
  */
 export function FeedbackPage() {
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Text variant="header-1">Feedback после игры</Text>
       <KarmaHint />
       <PostGameFeedbackForm />

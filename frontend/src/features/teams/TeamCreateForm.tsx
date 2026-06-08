@@ -41,7 +41,7 @@ export function TeamCreateForm() {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+    <div className="hockey-stack hockey-stack--gap-12">
       <Text variant="subheader-2">Создать команду</Text>
       <TextInput label="Название" value={name} onUpdate={setName} />
       <TextInput label="Город" value={city} onUpdate={setCity} />

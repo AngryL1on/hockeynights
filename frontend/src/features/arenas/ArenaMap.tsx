@@ -22,7 +22,6 @@ import {
   OSM_ATTRIBUTION,
   OSM_TILE_URL,
 } from '@/shared/config/geo'
-import 'leaflet/dist/leaflet.css'
 
 const BOOKING_LABELS: Record<ArenaBookingMode, string> = {
   slot_calendar: 'Слоты по времени',

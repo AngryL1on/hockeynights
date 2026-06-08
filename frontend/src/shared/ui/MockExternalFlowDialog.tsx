@@ -48,7 +48,7 @@ export function MockExternalFlowDialog({
     <Dialog open={open} onClose={onClose} size="m">
       <Dialog.Header caption={`Phase 1 mock · ${FLOW_LABELS[flowType]}`} />
       <Dialog.Body>
-        <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+        <div className="hockey-stack hockey-stack--gap-12">
           <Text variant="subheader-2">{partnerName}</Text>
           <Text color="secondary">
             Это демо-интерфейс партнёрского сценария. В Phase 2 кнопка откроет реальный портал

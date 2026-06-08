@@ -25,8 +25,8 @@ export function ShopCard({shop}: ShopCardProps) {
 
   return (
     <>
-      <Card view="outlined" style={{padding: 16}}>
-        <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+      <Card view="outlined" className="hockey-panel">
+        <div className="hockey-stack hockey-stack--gap-8">
           <Text variant="subheader-2">{shop.name}</Text>
           {shop.city && <Text color="secondary">{shop.city}</Text>}
           <Label size="s">{shop.partnerStatus}</Label>

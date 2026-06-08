@@ -52,11 +52,11 @@ export function TeamRoster({teamId}: TeamRosterProps) {
   }))
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       {byPosition.map(({position, members}) => (
         <div key={position}>
           <PositionLabel position={position} showFull />
-          <div style={{marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6}}>
+          <div className="hockey-mt-8 hockey-stack hockey-stack--gap-6">
             {members.length === 0 ? (
               <div className="roster-hook-slot roster-hook-slot--deficit">
                 <span className="roster-hook-slot__hook" aria-hidden>
@@ -70,7 +70,7 @@ export function TeamRoster({teamId}: TeamRosterProps) {
                   <span className="roster-hook-slot__hook" aria-hidden>
                     🪝
                   </span>
-                  <div style={{flex: 1}}>
+                  <div className="roster-hook-slot__body">
                     <Text variant="subheader-2">{member.displayName}</Text>
                   </div>
                   <Select

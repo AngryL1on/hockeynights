@@ -59,8 +59,8 @@ export function HockeyProfileForm() {
   }
 
   return (
-    <Card view="filled" style={{maxWidth: 640}}>
-      <div style={{padding: 24, display: 'flex', flexDirection: 'column', gap: 16}}>
+    <Card view="filled" className="hockey-form-shell">
+      <div className="hockey-panel hockey-panel--24 hockey-stack hockey-stack--gap-16">
         <Text variant="header-1">Hockey ID</Text>
 
         <div>
@@ -68,7 +68,7 @@ export function HockeyProfileForm() {
           <Progress value={profile.profileCompleteness} text={`${profile.profileCompleteness}%`} />
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
+        <div className="hockey-stack hockey-stack--gap-4">
           <KarmaScore score={profile.karmaScore} size="m" />
           <KarmaHint />
         </div>

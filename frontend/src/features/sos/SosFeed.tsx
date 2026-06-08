@@ -53,11 +53,11 @@ export function SosFeed() {
     type: 'sos',
     isSos: request.isGoalkeeperSos,
     actions: (
-      <div style={{display: 'flex', flexDirection: 'column', gap: 8, minWidth: 200}}>
+      <div className="hockey-min-w-200 hockey-stack hockey-stack--gap-8">
         {request.comment && <Text>{request.comment}</Text>}
         <Text color="secondary">Сообщение отклика</Text>
         <TextArea value={message} onUpdate={setMessage} minRows={2} />
-        <div style={{display: 'flex', gap: 8, flexWrap: 'wrap'}}>
+        <div className="hockey-row hockey-row--gap-8">
           <HockeyButton
             variant="sos"
             loading={respondMutation.isPending}
@@ -80,7 +80,7 @@ export function SosFeed() {
   }))
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+    <div className="hockey-stack hockey-stack--gap-16">
       <Checkbox
         checked={goalieOnly}
         onUpdate={setGoalieOnly}

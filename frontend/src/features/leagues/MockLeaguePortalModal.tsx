@@ -33,7 +33,7 @@ export function MockLeaguePortalModal({open, onClose, league}: MockLeaguePortalM
         </Button>
       }
     >
-      <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+      <div className="hockey-stack hockey-stack--gap-8">
         <Text>{league.region}</Text>
         {league.level && <Text color="secondary">Уровень: {league.level}</Text>}
         <Text color="secondary">Интеграция: {league.integrationStatus}</Text>
