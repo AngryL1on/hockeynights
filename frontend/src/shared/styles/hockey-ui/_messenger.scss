@@ -65,8 +65,32 @@
 }
 
 .messenger-header {
+  gap: 12px;
   background: rgba(255, 255, 255, 0.01);
   @include glass-panel(8px);
+}
+
+.messenger-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(93, 172, 255, 0.16);
+  }
 }
 
 .chat-list {
@@ -293,11 +317,43 @@
 @include breakpoint($max: 768px) {
   .messenger-layout {
     grid-template-columns: 1fr;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 140px);
+    min-height: 0;
+    border-radius: 12px;
   }
 
-  .messenger-sidebar {
-    display: none;
+  .messenger-layout--mobile {
+    .messenger-sidebar {
+      display: flex;
+    }
+
+    .messenger-main {
+      display: none;
+    }
+  }
+
+  .messenger-layout--mobile-chat {
+    grid-template-rows: minmax(0, 1fr);
+
+    .messenger-sidebar {
+      display: none;
+    }
+
+    .messenger-main {
+      display: flex;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .messenger-messages {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+  }
+
+  .messenger-sidebar,
+  .messenger-main {
+    min-height: 0;
   }
 
   .chat-bubble-container {
