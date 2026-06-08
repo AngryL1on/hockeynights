@@ -32,6 +32,7 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    if: github.repository == 'AngryL1on/hockeynights'
     permissions:
       contents: read
       packages: write
@@ -77,10 +78,10 @@ jobs:
           envs: IMAGE,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,APP_PORT
           env:
             IMAGE: ${{ env.IMAGE_NAME }}
-            IMAGE_TAG: ${{ github.sha }}
+            IMAGE_TAG: latest
             GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
             GHCR_USER: ${{ github.actor }}
-            APP_PORT: ${{ vars.APP_PORT || '8080' }}
+            APP_PORT: ${{ vars.APP_PORT || '8081' }}
           script: |
             set -euo pipefail
             cd /opt/hockeynights
@@ -95,3 +96,4 @@ jobs:
             docker image prune -f
 
             docker compose ps
+            echo "Deployed main → http://${{ secrets.SSH_HOST }}:${APP_PORT}"
