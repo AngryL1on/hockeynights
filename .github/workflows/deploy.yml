@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/angryl1on/hockeynights
+  IMAGE_NAME: ghcr.io/regentx/hockeynights
 
 jobs:
   test:
@@ -53,7 +53,7 @@ jobs:
     needs: build-image
     runs-on: ubuntu-latest
     if: >-
-      github.repository == 'AngryL1on/hockeynights' &&
+      github.repository == 'RegentX/hockeynights' &&
       github.ref == 'refs/heads/main' &&
       github.event_name != 'pull_request'
     permissions:

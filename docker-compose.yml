@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ${IMAGE:-ghcr.io/angryl1on/hockeynights:latest}
+    image: ${IMAGE:-ghcr.io/regentx/hockeynights:latest}
     container_name: hockeynights-frontend
     ports:
       - "${APP_PORT:-8081}:80"
