@@ -226,8 +226,7 @@
 }
 
 .arena-map__leaflet .leaflet-control-attribution {
-  font-size: 10px;
-    background: rgba(255, 255, 255, 0.88);
+  display: none;
 }
 
 .arena-map__leaflet-pin--slot_calendar .arena-map__leaflet-pin-core {
@@ -261,10 +260,22 @@
 
 .arena-map__surface {
   position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--hockey-card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--hockey-card-border);
 
+}
+
+.arena-map__bottom-cover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  z-index: 1100;
+  pointer-events: none;
+  background: var(--hockey-card-bg-solid, var(--hockey-surface));
+  border-top: 1px solid var(--hockey-card-border);
 }
 
 .arena-map__leaflet {

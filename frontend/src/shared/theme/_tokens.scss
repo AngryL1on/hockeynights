@@ -54,6 +54,7 @@ $slot-green: #34d399;
 [data-hockey-theme='locker'] {
   --hockey-surface: var(--hockey-locker-warm);
   --hockey-card-bg: rgba(255, 255, 255, 0.92);
+  --hockey-card-bg-solid: #ffffff;
   --hockey-card-border: var(--hockey-locker-concrete);
   --hockey-accent: var(--hockey-line-red);
   --hockey-text-muted: #6b6560;
@@ -77,6 +78,7 @@ $slot-green: #34d399;
 [data-hockey-theme='ice'] {
   --hockey-surface: var(--hockey-ice-deep);
   --hockey-card-bg: rgba(18, 42, 69, 0.85);
+  --hockey-card-bg-solid: #122a45;
   --hockey-card-border: rgba(94, 200, 242, 0.18);
   --hockey-accent: var(--hockey-ice-glow);
   --hockey-text-muted: var(--hockey-rink-mist);

@@ -87,6 +87,7 @@ export function ArenaMap({
             )
           })}
         </MapContainer>
+        <div className="arena-map__bottom-cover" aria-hidden />
       </div>
 
       <div className="arena-map__a11y-pins" aria-hidden={false}>
