@@ -1,0 +1,11 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_MODE: mock
+        VITE_BACKEND_URL: /api/v1
+    ports:
+      - "8080:80"
+    restart: unless-stopped
