@@ -93,18 +93,18 @@ jobs:
 
       - name: Deploy on Proxmox host
         uses: appleboy/ssh-action@v1
+        env:
+          IMAGE: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: latest
+          GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          APP_PORT: ${{ vars.APP_PORT || '8081' }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           envs: IMAGE,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,APP_PORT
-          env:
-            IMAGE: ${{ env.IMAGE_NAME }}
-            IMAGE_TAG: latest
-            GHCR_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
-            GHCR_USER: ${{ github.actor }}
-            APP_PORT: ${{ vars.APP_PORT || '8081' }}
           script: |
             set -euo pipefail
             cd /opt/hockeynights
