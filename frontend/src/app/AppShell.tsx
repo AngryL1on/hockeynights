@@ -7,6 +7,7 @@ import {useEffect, useRef, useState} from 'react'
 import {Link, Outlet, useLocation} from 'react-router-dom'
 import {useQuery} from '@tanstack/react-query'
 import {fetchNotifications} from '@/features/notifications/api/notificationsApi'
+import {fetchChats, getTotalUnreadCount} from '@/features/messenger/api/messengerApi'
 import {LAUNCH_REGION} from '@/shared/config/geo'
 import {useHockeyTheme} from '@/shared/theme/HockeyThemeProvider'
 import {HockeyButton} from '@/shared/ui/HockeyButton'
@@ -63,7 +64,12 @@ export function AppShell() {
     queryKey: ['notifications'],
     queryFn: fetchNotifications,
   })
+  const {data: chats = []} = useQuery({
+    queryKey: ['messenger-chats'],
+    queryFn: fetchChats,
+  })
   const unreadCount = notifications.filter((n) => !n.readAt).length
+  const unreadChatCount = getTotalUnreadCount(chats)
   const isMessengerRoute = location.pathname === '/messenger'
   const isFocusMode = isLeftCollapsed && isRightCollapsed
 
@@ -165,7 +171,13 @@ export function AppShell() {
             {NAV_ITEMS.map((item) => {
               const active = location.pathname === item.to
               const badge =
-                item.to === '/notifications' && unreadCount > 0 ? unreadCount : null
+                item.to === '/notifications' && unreadCount > 0
+                  ? unreadCount
+                  : item.to === '/messenger' && unreadChatCount > 0
+                    ? unreadChatCount > 99
+                      ? '99+'
+                      : unreadChatCount
+                    : null
               return (
                 <Link
                   key={item.to}

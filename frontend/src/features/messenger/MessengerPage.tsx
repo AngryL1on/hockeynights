@@ -4,7 +4,8 @@
 
 import {useEffect, useState} from 'react'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
-import type {Chat, Message} from '@/entities/messenger/types'
+import type {Message} from '@/entities/messenger/types'
+import {fetchChats} from '@/features/messenger/api/messengerApi'
 import {ChatBubble} from './ChatBubble'
 import {Text, TextInput, Button, Icon} from '@gravity-ui/uikit'
 import {PaperPlane} from '@gravity-ui/icons'
@@ -26,17 +27,14 @@ async function fetchChatMessages(chatId: string): Promise<Message[]> {
 
 export function MessengerPage() {
   const queryClient = useQueryClient()
-  const [chats, setChats] = useState<Chat[]>([])
+  const {data: chats = []} = useQuery({
+    queryKey: ['messenger-chats'],
+    queryFn: fetchChats,
+  })
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
   const [inputText, setInputText] = useState('')
   const [isMobile, setIsMobile] = useState(isMobileViewport)
   const [mobileView, setMobileView] = useState<'list' | 'chat'>('list')
-
-  useEffect(() => {
-    fetch('/mock-api/v1/messenger/chats')
-      .then(res => res.json())
-      .then(setChats)
-  }, [])
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_BREAKPOINT)

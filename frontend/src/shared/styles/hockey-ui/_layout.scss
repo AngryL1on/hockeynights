@@ -376,6 +376,32 @@
     transition: transform var(--hockey-motion-fast) var(--hockey-motion-ease);
   }
 
+  &__icon-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--hockey-line-red);
+    color: #fff;
+    font-family: var(--hockey-font-scoreboard);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    border: 2px solid var(--hockey-card-bg);
+    box-shadow: 0 2px 8px rgba(225, 6, 0, 0.45);
+    pointer-events: none;
+  }
+
   &__label {
     max-width: 100%;
     overflow: hidden;
