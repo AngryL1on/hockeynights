@@ -1,11 +1,7 @@
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        VITE_API_MODE: mock
-        VITE_BACKEND_URL: /api/v1
+    image: ${IMAGE:-ghcr.io/regentx/hockeynights:latest}
+    container_name: hockeynights-frontend
     ports:
-      - "8080:80"
+      - "${APP_PORT:-8081}:80"
     restart: unless-stopped

@@ -2,7 +2,7 @@
  * SPEC-FR-2.2.1, SPEC-FR-2.2.2, SPEC-FR-2.2.3, SPEC-FR-2.2.4
  */
 
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {Button, Card, Progress, Select, Text, TextArea, TextInput} from '@gravity-ui/uikit'
 import {fetchMyProfile, updateMyProfile} from '@/features/profile/api/profileApi'
@@ -24,18 +24,9 @@ const SKILL_OPTIONS = [
   {value: 'league', content: 'Лига'},
 ]
 
-/**
- * @spec SPEC-FR-2.2.1 - Форма создания и редактирования Hockey ID
- * @spec SPEC-FR-2.2.4 - Отображение заполненности профиля
- */
-export function HockeyProfileForm() {
+function HockeyProfileFormFields({profile}: {profile: HockeyProfile}) {
   const queryClient = useQueryClient()
-  const {data: profile, isLoading} = useQuery({queryKey: ['profile'], queryFn: fetchMyProfile})
-  const [form, setForm] = useState<Partial<HockeyProfile>>({})
-
-  useEffect(() => {
-    if (profile) setForm(profile)
-  }, [profile])
+  const [form, setForm] = useState<Partial<HockeyProfile>>(profile)
 
   const saveMutation = useMutation({
     mutationFn: updateMyProfile,
@@ -52,10 +43,6 @@ export function HockeyProfileForm() {
   /** @spec SPEC-FR-2.2.1 - Сохранение профиля */
   function handleSave() {
     saveMutation.mutate(form)
-  }
-
-  if (isLoading || !profile) {
-    return <Text>Загрузка профиля...</Text>
   }
 
   return (
@@ -127,4 +114,18 @@ export function HockeyProfileForm() {
       </div>
     </Card>
   )
+}
+
+/**
+ * @spec SPEC-FR-2.2.1 - Форма создания и редактирования Hockey ID
+ * @spec SPEC-FR-2.2.4 - Отображение заполненности профиля
+ */
+export function HockeyProfileForm() {
+  const {data: profile, isLoading} = useQuery({queryKey: ['profile'], queryFn: fetchMyProfile})
+
+  if (isLoading || !profile) {
+    return <Text>Загрузка профиля...</Text>
+  }
+
+  return <HockeyProfileFormFields key={profile.userId} profile={profile} />
 }

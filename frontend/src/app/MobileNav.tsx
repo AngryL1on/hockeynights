@@ -41,7 +41,7 @@ export function MobileNav() {
             <span className="mobile-nav__icon" aria-hidden>
               {item.icon}
             </span>
-            {item.label}
+            <span className="mobile-nav__label">{item.label}</span>
           </Link>
         )
       })}

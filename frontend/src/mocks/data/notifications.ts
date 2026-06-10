@@ -5,7 +5,7 @@
 import type {Notification} from '@/entities/notification/types'
 
 /** @spec SPEC-FR-10.1.1 - Mock уведомления */
-export let mockNotifications: Notification[] = [
+export const mockNotifications: Notification[] = [
   {
     id: 'notif-001',
     userId: 'user-001',

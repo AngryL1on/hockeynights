@@ -3,6 +3,7 @@
  */
 
 import {useEffect, useState} from 'react'
+import {useQuery, useQueryClient} from '@tanstack/react-query'
 import type {Chat, Message} from '@/entities/messenger/types'
 import {ChatBubble} from './ChatBubble'
 import {Text, TextInput, Button, Icon} from '@gravity-ui/uikit'
@@ -24,13 +25,12 @@ async function fetchChatMessages(chatId: string): Promise<Message[]> {
 }
 
 export function MessengerPage() {
+  const queryClient = useQueryClient()
   const [chats, setChats] = useState<Chat[]>([])
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
-  const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
   const [isMobile, setIsMobile] = useState(isMobileViewport)
   const [mobileView, setMobileView] = useState<'list' | 'chat'>('list')
-  const [isLoadingMessages, setIsLoadingMessages] = useState(false)
 
   useEffect(() => {
     fetch('/mock-api/v1/messenger/chats')
@@ -54,30 +54,20 @@ export function MessengerPage() {
     return () => mq.removeEventListener('change', update)
   }, [])
 
-  useEffect(() => {
-    if (!isMobileViewport() && !selectedChatId && chats.length > 0) {
-      void loadMessages(chats[0].id)
-    }
-  }, [chats, selectedChatId])
+  const activeChatId =
+    selectedChatId ?? (!isMobile && chats[0]?.id ? chats[0].id : null)
 
-  const loadMessages = async (chatId: string) => {
-    setSelectedChatId(chatId)
-    setIsLoadingMessages(true)
-    try {
-      const nextMessages = await fetchChatMessages(chatId)
-      setMessages(nextMessages)
-    } catch {
-      setMessages([])
-    } finally {
-      setIsLoadingMessages(false)
-    }
-  }
+  const {data: messages = [], isLoading: isLoadingMessages} = useQuery({
+    queryKey: ['messenger-messages', activeChatId],
+    queryFn: () => fetchChatMessages(activeChatId!),
+    enabled: Boolean(activeChatId),
+  })
 
   const handleSelectChat = (chatId: string) => {
     if (isMobileViewport()) {
       setMobileView('chat')
     }
-    void loadMessages(chatId)
+    setSelectedChatId(chatId)
   }
 
   const handleMobileBack = () => {
@@ -85,11 +75,11 @@ export function MessengerPage() {
   }
 
   const handleSendMessage = () => {
-    if (!inputText.trim() || !selectedChatId) return
+    if (!inputText.trim() || !activeChatId) return
     
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
-      chatId: selectedChatId,
+      chatId: activeChatId,
       senderId: 'me',
       senderName: 'Я',
       type: 'text',
@@ -97,7 +87,10 @@ export function MessengerPage() {
       timestamp: new Date().toISOString(),
     }
     
-    setMessages(prev => [...prev, newMessage])
+    queryClient.setQueryData<Message[]>(
+      ['messenger-messages', activeChatId],
+      (prev = []) => [...prev, newMessage],
+    )
     setInputText('')
   }
 
@@ -109,7 +102,7 @@ export function MessengerPage() {
     .filter(Boolean)
     .join(' ')
 
-  const selectedChat = chats.find((c) => c.id === selectedChatId)
+  const selectedChat = chats.find((c) => c.id === activeChatId)
 
   return (
     <div className={layoutClass}>
@@ -121,7 +114,7 @@ export function MessengerPage() {
               key={chat.id}
               type="button"
               onClick={() => handleSelectChat(chat.id)}
-              className={`chat-item ${selectedChatId === chat.id ? 'chat-item--selected' : ''}`}
+              className={`chat-item ${activeChatId === chat.id ? 'chat-item--selected' : ''}`}
             >
               <span className="chat-item__avatar" aria-hidden>
                 {chat.title.slice(0, 1)}
@@ -143,7 +136,7 @@ export function MessengerPage() {
       </div>
       
       <div className="messenger-main">
-        {selectedChatId ? (
+        {activeChatId ? (
           <>
             <div className="messenger-header">
               {isMobile && (

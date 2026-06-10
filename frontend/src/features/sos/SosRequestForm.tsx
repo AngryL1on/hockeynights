@@ -3,7 +3,7 @@
  * SPEC-UI-1.2
  */
 
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {Checkbox, Select, Text, TextArea, TextInput} from '@gravity-ui/uikit'
 import {createRecruitmentRequest} from '@/features/sos/api/recruitmentApi'
@@ -33,10 +33,7 @@ export function SosRequestForm() {
   const {data: events = []} = useQuery({queryKey: ['events'], queryFn: fetchEvents})
 
   const [eventId, setEventId] = useState('')
-
-  useEffect(() => {
-    if (!eventId && events[0]?.id) setEventId(events[0].id)
-  }, [events, eventId])
+  const resolvedEventId = eventId || events[0]?.id || ''
   const [requestedPosition, setRequestedPosition] = useState<PlayerPosition>('goalie')
   const [skillLevel, setSkillLevel] = useState<SkillLevel>('amateur')
   const [isGoalkeeperSos, setIsGoalkeeperSos] = useState(true)
@@ -55,9 +52,9 @@ export function SosRequestForm() {
   const eventOptions = events.map((e) => ({value: e.id, content: e.title}))
 
   function handleSubmit() {
-    if (!eventId) return
+    if (!resolvedEventId) return
     mutation.mutate({
-      eventId,
+      eventId: resolvedEventId,
       requestedPosition,
       skillLevel,
       isGoalkeeperSos,
@@ -72,7 +69,7 @@ export function SosRequestForm() {
       <Text variant="subheader-2">Запустить добор / Goalkeeper SOS</Text>
       <Select
         label="Событие"
-        value={eventId ? [eventId] : []}
+        value={resolvedEventId ? [resolvedEventId] : []}
         onUpdate={(v) => setEventId(v[0] ?? '')}
         options={eventOptions}
       />

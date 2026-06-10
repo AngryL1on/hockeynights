@@ -3,7 +3,7 @@
  * SPEC-UI-2.7, SPEC-UI-2.8
  */
 
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useQuery} from '@tanstack/react-query'
 import {Text} from '@gravity-ui/uikit'
 import {fetchLeagues, fetchLeagueSchedule, fetchLeagueStandings} from '@/features/leagues/api/leaguesApi'
@@ -26,24 +26,19 @@ export function LeaguesPage() {
     queryFn: fetchLeagues,
   })
 
-  useEffect(() => {
-    if (!selectedLeagueId && leagues[0]?.id) {
-      setSelectedLeagueId(leagues[0].id)
-    }
-  }, [leagues, selectedLeagueId])
-
-  const selectedLeague = leagues.find((l) => l.id === selectedLeagueId)
+  const activeLeagueId = selectedLeagueId ?? leagues[0]?.id ?? null
+  const selectedLeague = leagues.find((l) => l.id === activeLeagueId)
 
   const {data: standings = [], isLoading: standingsLoading} = useQuery({
-    queryKey: ['league-standings', selectedLeagueId],
-    queryFn: () => fetchLeagueStandings(selectedLeagueId!),
-    enabled: Boolean(selectedLeagueId),
+    queryKey: ['league-standings', activeLeagueId],
+    queryFn: () => fetchLeagueStandings(activeLeagueId!),
+    enabled: Boolean(activeLeagueId),
   })
 
   const {data: schedule = [], isLoading: scheduleLoading} = useQuery({
-    queryKey: ['league-schedule', selectedLeagueId],
-    queryFn: () => fetchLeagueSchedule(selectedLeagueId!),
-    enabled: Boolean(selectedLeagueId),
+    queryKey: ['league-schedule', activeLeagueId],
+    queryFn: () => fetchLeagueSchedule(activeLeagueId!),
+    enabled: Boolean(activeLeagueId),
   })
 
   return (
@@ -60,13 +55,13 @@ export function LeaguesPage() {
           <LeagueCard
             key={league.id}
             league={league}
-            selected={selectedLeagueId === league.id}
+            selected={activeLeagueId === league.id}
             onSelect={setSelectedLeagueId}
           />
         ))}
       </div>
 
-      {selectedLeagueId && selectedLeague && (
+      {activeLeagueId && selectedLeague && (
         <IceCard padding="m">
           <div className="hockey-row hockey-row--gap-12 hockey-row--between hockey-mb-16">
             <div>
